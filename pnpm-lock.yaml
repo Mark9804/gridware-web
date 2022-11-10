@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@trivago/prettier-plugin-sort-imports': 3.3.1
+  '@trivago/prettier-plugin-sort-imports': 3.4.0
   '@vitejs/plugin-legacy': 2.3.1
   '@vitejs/plugin-vue': 3.2.0
   chalk: 5.1.2
@@ -32,7 +32,7 @@ dependencies:
   vue-router: 4.1.6_vue@3.2.41
 
 devDependencies:
-  '@trivago/prettier-plugin-sort-imports': 3.3.1_prettier@2.7.1
+  '@trivago/prettier-plugin-sort-imports': 3.4.0_prettier@2.7.1
   '@vitejs/plugin-legacy': 2.3.1_terser@5.15.1+vite@3.2.3
   '@vitejs/plugin-vue': 3.2.0_vite@3.2.3+vue@3.2.41
   chalk: 5.1.2
@@ -90,13 +90,13 @@ packages:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@babel/code-frame': 7.18.6
-      '@babel/generator': 7.17.7
+      '@babel/generator': 7.20.4
       '@babel/helper-compilation-targets': 7.20.0_@babel+core@7.17.8
       '@babel/helper-module-transforms': 7.20.2
       '@babel/helpers': 7.20.1
       '@babel/parser': 7.20.3
       '@babel/template': 7.18.10
-      '@babel/traverse': 7.17.3
+      '@babel/traverse': 7.20.1
       '@babel/types': 7.20.2
       convert-source-map: 1.9.0
       debug: 4.3.4
@@ -1242,7 +1242,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.18.6
-      '@babel/generator': 7.17.7
+      '@babel/generator': 7.20.4
       '@babel/helper-environment-visitor': 7.18.9
       '@babel/helper-function-name': 7.19.0
       '@babel/helper-hoist-variables': 7.18.6
@@ -1483,8 +1483,8 @@ packages:
       string.prototype.matchall: 4.0.8
     dev: true
 
-  /@trivago/prettier-plugin-sort-imports/3.3.1_prettier@2.7.1:
-    resolution: {integrity: sha512-ITGspeOlFnK1dwJVjqOguGW3Ja8hakxOPFudhpP0YfsDHT0yM0u4TU+62Vl83hCatnhB4+fYhlSZyiifUv4xSg==}
+  /@trivago/prettier-plugin-sort-imports/3.4.0_prettier@2.7.1:
+    resolution: {integrity: sha512-485Iailw8X5f7KetzRka20RF1kPBEINR5LJMNwlBZWY1gRAlVnv5dZzyNPnLxSP0Qcia8HETa9Cdd8LlX9o+pg==}
     peerDependencies:
       prettier: 2.x
     dependencies:
@@ -1493,6 +1493,7 @@ packages:
       '@babel/parser': 7.18.9
       '@babel/traverse': 7.17.3
       '@babel/types': 7.17.0
+      '@vue/compiler-sfc': 3.2.41
       javascript-natural-sort: 0.7.1
       lodash: 4.17.21
       prettier: 2.7.1
