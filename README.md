@@ -8,4 +8,3 @@ An online version of GridWare.
 This project is not completed yet; I will be developing this tool during my doctoral course. The overall progress would take about 8 months.
 
 Once finished, I will update the README file and publish a release version.
-
