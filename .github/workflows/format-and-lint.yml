@@ -13,7 +13,7 @@ jobs:
       - name: Install node modules
         run: pnpm install
       - name: Prettier Format
-        run: pnpm run format
+        run: pnpm format
       - name: Config git
         run: |
           git config user.name 'github-actions'
