@@ -76,7 +76,12 @@ export default defineConfig({
       selfDestroying: true,
     }),
     viteCompression(),
-    visualizer(),
+    visualizer({
+      title: "GridWare Web",
+      template: "treemap",
+      gzipSize: true,
+      brotliSize: true,
+    }),
   ],
   build: {
     emptyOutDir: true,

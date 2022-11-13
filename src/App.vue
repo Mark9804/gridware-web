@@ -1,31 +1,130 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from "./components/HelloWorld.vue";
+import { ref } from "vue";
+
+const menuHoverStatus = ref({
+  convert: false,
+});
+
+function toggleSubMenu(menu) {
+  if (true === menuHoverStatus.value[menu]) {
+    setTimeout(() => {
+      menuHoverStatus.value[menu] = false;
+    }, 200);
+  } else {
+    menuHoverStatus.value[menu] = true;
+  }
+}
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="navbar shadow-near-below">
+    <div class="level-1">
+      <router-link to="/" title="Return to home screen">Home</router-link>
+    </div>
+    <div class="level-1">
+      <router-link to="/analyze" title="Analyze your data">Analyze</router-link>
+    </div>
+    <div
+      class="level-1"
+      @mouseenter="toggleSubMenu('convert')"
+      @mouseleave="toggleSubMenu('convert')"
+    >
+      <router-link to="/convert" title="Convert to GridWare format"
+        >Convert</router-link
+      >
+      <transition name="submenu">
+        <div class="sub-menu shadow-far" v-show="menuHoverStatus.convert">
+          <router-link
+            to="/convert/to-gridware"
+            title="Convert to GridWare format"
+            >To GridWare format
+          </router-link>
+          <router-link
+            to="/convert/from-gridware"
+            title="Convert from GridWare format"
+            >From GridWare format
+          </router-link>
+        </div>
+      </transition>
+    </div>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <div id="main-view">
+    <router-view></router-view>
+  </div>
 </template>
 
-<style scoped>
-.logo {
-  will-change: filter;
-  padding: 1.5em;
-  height: 6em;
+<style scoped lang="scss">
+.navbar {
+  display: flex;
+  position: sticky;
+  top: 0;
+  justify-content: center;
+  background-color: var(--color-navbar-background);
+  width: 100vw;
+
+  .level-1 {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    & > a {
+      display: flex;
+      position: relative;
+      padding: 0.75rem 1rem;
+
+      &::after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transition: all 0.125s ease-in-out;
+        background-color: magenta;
+        width: 100%;
+        height: 0;
+        content: "";
+      }
+
+      &:is(.router-link-exact-active, .router-link-active)::after {
+        height: 0.25rem;
+      }
+    }
+  }
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+#main-view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 1rem;
+  width: 100vw;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+.sub-menu {
+  display: flex;
+  position: absolute;
+  top: 100%;
+  flex-direction: column;
+  background-color: var(--color-navbar-background);
+  font-size: 0.8rem;
+
+  a {
+    display: flex;
+    position: relative;
+    padding: 0.5rem 1rem;
+  }
+}
+
+.submenu-enter-active,
+.submenu-leave-active {
+  transition: all 0.375s;
+}
+
+.submenu-enter-from,
+.submenu-leave-to {
+  transform: translateY(-0.5rem);
+  opacity: 0;
 }
 </style>
