@@ -1,5 +1,7 @@
-function convertCsv(csvText: string, delimiter: string = ","): object[] {
-  const lines = [];
+import { CsvContent } from "../types/store";
+
+function convertCsv(csvText: string, delimiter = ","): CsvContent[] {
+  const lines: string[] = [];
   const linesArray = csvText.split("\n");
   // for trimming and deleting extra space
   linesArray.forEach((e) => {
@@ -12,7 +14,7 @@ function convertCsv(csvText: string, delimiter: string = ","): object[] {
   const headers = lines[0]?.split(delimiter) || [];
 
   for (let i = 1; i < lines.length; i++) {
-    const obj = {};
+    const obj = {} as { [key: string]: string | number | boolean | undefined };
     const currentLine = lines[i].split(delimiter);
 
     for (let j = 0; j < headers.length; j++) {

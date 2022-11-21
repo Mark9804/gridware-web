@@ -1,12 +1,16 @@
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { Ref, ref } from "vue";
 
-const menuHoverStatus = ref({
+interface MenuHoverStatus {
+  [key: string]: boolean;
+}
+
+const menuHoverStatus: Ref<MenuHoverStatus> = ref({
   convert: false,
 });
 
-function toggleSubMenu(menu) {
-  if (true === menuHoverStatus.value[menu]) {
+function toggleSubMenu(menu: keyof MenuHoverStatus) {
+  if (menuHoverStatus.value[menu]) {
     setTimeout(() => {
       menuHoverStatus.value[menu] = false;
     }, 200);

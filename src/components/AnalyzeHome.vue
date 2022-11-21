@@ -14,23 +14,32 @@
     <div class="preview-container">
       <filter-variables v-if="mainStore.getCsvHeadings.length !== 0" />
     </div>
+
+    <div>
+      <analyze-selected-variables />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, watch } from "vue";
 import { useMainStore } from "../store/mainStore.js";
+import { CsvContent } from "../types/store";
 import { convertCsv } from "../utils/convertCsv";
 import AnalyzeSelectedVariables from "./AnalyzeSelectedVariables.vue";
 import FilterVariables from "./FilterVariables.vue";
 
 const mainStore = useMainStore();
 
-function readFile(file: File) {
-  return new Promise((resolve, reject) => {
+const fileEncoding = computed<string>(() => {
+  return mainStore.getEncoding;
+});
+
+function readFile(file: File): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event) => {
-      resolve(event.target.result);
+      resolve(event.target?.result as string);
     };
     reader.onerror = (error) => {
       reject(error);
@@ -39,41 +48,47 @@ function readFile(file: File) {
   });
 }
 
-const fileEncoding = computed<string>(() => mainStore.getEncoding);
-
-function handleFileChange(event: Event, isFile = false) {
-  const target = isFile ? event : (event.target as HTMLInputElement);
-  const file: Event | HTMLInputElement | File = isFile
-    ? target
-    : (target.files as FileList)[0];
+function handleFileChange(event: Event) {
+  const target = event.target as HTMLInputElement;
+  const file = (target.files as FileList)[0];
   const fileName = file.name ?? "";
-  mainStore.submitFileBlob(file);
+  mainStore.submitFile(file);
 
   if (/\.csv$/i.test(fileName)) {
     readFile(file)
-      .then((data) => {
+      .then((data: string) => {
         mainStore.setCsvProps(convertCsv(data));
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
       });
   } else if (/\.json$/i.test(fileName)) {
     readFile(file)
-      .then((data) => {
+      .then((data: string) => {
         mainStore.setCsvProps(JSON.parse(data));
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
       });
   } else {
     // do nothing
   }
 }
 
-watch(fileEncoding, (newValue) => {
-  const fileBlob: File = mainStore.getFile;
-  handleFileChange(fileBlob, true);
-});
+function handleEncodingChange() {
+  const file = mainStore.getFile;
+  if (file?.name) {
+    readFile(file)
+      .then((data: string) => {
+        mainStore.setCsvProps(convertCsv(data) as CsvContent[]);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }
+}
+
+watch(fileEncoding, handleEncodingChange);
 </script>
 
 <style scoped lang="scss">

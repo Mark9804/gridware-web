@@ -16,15 +16,17 @@
         />
         <div>{{ heading }}</div>
       </div>
+      <!-- eslint-disable vue/valid-v-for -->
       <div
         class="table-content"
         v-for="content in mainStore
           .getHeadingContent(heading)
           .slice(0, maxRows)"
-        :key="randomString(8)"
+        :key="randomString(4)"
       >
         {{ content }}
       </div>
+      <!-- eslint-enable vue/valid-v-for -->
     </div>
   </div>
 </template>
@@ -46,13 +48,15 @@ const props = defineProps({
 });
 
 const mainStore = useMainStore();
-const checkedVariables = computed(() => mainStore.getSelectedVariables);
+const checkedVariables = computed<string[]>(
+  () => mainStore.getSelectedVariables
+);
 
 function updateCheckedVariables(heading: string) {
   mainStore.setSelectedVariables(heading);
 }
 
-const maxRows = computed(() => {
+const maxRows = computed<number>(() => {
   return !isNaN(props.maxRows) ? Math.max(props.maxRows, 0) || 30 : 30;
 });
 </script>

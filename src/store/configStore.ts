@@ -14,10 +14,10 @@ export const useConfigStore = defineStore({
     getTheme: (state) => state.theme,
   },
   actions: {
-    setLanguage(language) {
+    setLanguage(language: string) {
       this.language = language;
     },
-    setTheme(theme) {
+    setTheme(theme: string) {
       this.theme = theme;
     },
   },

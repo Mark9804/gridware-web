@@ -2,7 +2,7 @@
   <select :value="selectedEncoding" @change="submitEncodingChange">
     <option
       v-for="encoding in encodingOptionList"
-      :key="encoding"
+      :key="encoding.label"
       :value="encoding.value"
     >
       {{ encoding.label }}
@@ -15,9 +15,7 @@ import { computed } from "vue";
 import { useMainStore } from "../store/mainStore";
 
 const mainStore = useMainStore();
-const selectedEncoding: computed<string> = computed(
-  () => mainStore.getEncoding
-);
+const selectedEncoding = computed<string>(() => mainStore.getEncoding);
 
 function submitEncodingChange(event: Event) {
   const target = event.target as HTMLSelectElement;

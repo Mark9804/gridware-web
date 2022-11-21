@@ -1,9 +1,9 @@
 <template>
-  <h2>Analyze Selected Variables</h2>
+  <div></div>
 </template>
 
 <script setup lang="ts">
 //
 </script>
 
-<style scoped></style>
+<style scoped lang="scss"></style>

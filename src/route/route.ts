@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "Home",
@@ -9,15 +9,16 @@ const routes = [
   {
     path: "/convert",
     name: "Convert",
-    description: "",
     children: [
       {
         path: "to-gridware",
         name: "ConvertToGridwareFormat",
+        component: () => import("../components/ConvertToGridwareFormat.vue"),
       },
       {
         path: "from-gridware",
         name: "ConvertFromGridwareFormat",
+        component: () => import("../components/ConvertFromGridwareFormat.vue"),
       },
     ],
   },

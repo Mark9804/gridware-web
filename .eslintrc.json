@@ -19,6 +19,7 @@
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "double"],
     "semi": ["warn", "always"],
+    "sort-exports/sort-exports": ["off"],
     "comma-dangle": [
       "error",
       {
@@ -29,7 +30,6 @@
         "functions": "ignore"
       }
     ],
-    "sort-exports/sort-exports": ["error", { "sortDir": "asc" }],
     "sort-imports": [
       "error",
       {

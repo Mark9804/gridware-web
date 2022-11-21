@@ -13,6 +13,19 @@
       :max-rows="maxRowCount"
     ></table-viewer>
 
+    <div class="participant-identifier">
+      <span>Identifier: </span>
+      <select :value="participantIdentifier" @change="handleIdentifierChange">
+        <option
+          v-for="heading in mainStore.getCsvHeadings"
+          :value="heading"
+          :key="heading"
+        >
+          {{ heading }}
+        </option>
+      </select>
+    </div>
+
     <div class="filter-variable-options">
       <div>
         <input
@@ -33,22 +46,17 @@
     <div class="encoding-options">
       <encoding-selector />
     </div>
-
-    <div>
-      <analyze-selected-variables />
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Ref, ref } from "vue";
+import { ref } from "vue";
 import { computed } from "vue";
 import { useMainStore } from "../store/mainStore";
-import AnalyzeSelectedVariables from "./AnalyzeSelectedVariables.vue";
 import EncodingSelector from "./EncodingSelector.vue";
 import TableViewer from "./TableViewer.vue";
 
-const maxRowCount: Ref<number> = ref(30);
+const maxRowCount = ref(30);
 const mainStore = useMainStore();
 
 const checkedVariables = computed<string[]>(
@@ -64,23 +72,32 @@ const allUnchecked = computed<boolean>(() => {
   return checkedVariables.value.length === 0;
 });
 
+const participantIdentifier = computed<string>(() => {
+  return mainStore.getParticipantIdentifier;
+});
+
 function handleSelect(selectionType: string) {
   switch (selectionType) {
     case "all":
-      if (true === allChecked.value) {
+      if (allChecked.value) {
         mainStore.deselectAllVariables();
       } else {
         mainStore.selectAllVariables();
       }
       break;
     case "none":
-      if (true === allUnchecked.value) {
+      if (allUnchecked.value) {
         // do nothing
       } else {
         mainStore.deselectAllVariables();
       }
       break;
   }
+}
+
+function handleIdentifierChange(event: Event) {
+  const target = event.target as HTMLInputElement;
+  mainStore.setParticipantIdentifier(target.value);
 }
 </script>
 
@@ -91,6 +108,7 @@ function handleSelect(selectionType: string) {
   grid-template-rows: max-content max-content;
   grid-template-columns: max-content max-content;
   grid-template-areas:
+    "table options-participant-identifier"
     "table options-variable-selection"
     "table options-encoding-selection";
 }
