@@ -22,12 +22,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
-import { useMainStore } from "../store/mainStore.js";
-import { CsvContent } from "../types/store";
-import { convertCsv } from "../utils/convertCsv";
-import AnalyzeSelectedVariables from "./AnalyzeSelectedVariables.vue";
-import FilterVariables from "./FilterVariables.vue";
+import { computed, watch } from 'vue';
+import { useMainStore } from '../store/mainStore.js';
+import { CsvContent } from '../types/store';
+import { convertCsv } from '../utils/convertCsv';
+import AnalyzeSelectedVariables from './AnalyzeSelectedVariables.vue';
+import FilterVariables from './FilterVariables.vue';
 
 const mainStore = useMainStore();
 
@@ -38,10 +38,10 @@ const fileEncoding = computed<string>(() => {
 function readFile(file: File): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = event => {
       resolve(event.target?.result as string);
     };
-    reader.onerror = (error) => {
+    reader.onerror = error => {
       reject(error);
     };
     reader.readAsText(file, fileEncoding.value);
@@ -51,7 +51,7 @@ function readFile(file: File): Promise<string> {
 function handleFileChange(event: Event) {
   const target = event.target as HTMLInputElement;
   const file = (target.files as FileList)[0];
-  const fileName = file.name ?? "";
+  const fileName = file.name ?? '';
   mainStore.submitFile(file);
 
   if (/\.csv$/i.test(fileName)) {
@@ -59,7 +59,7 @@ function handleFileChange(event: Event) {
       .then((data: string) => {
         mainStore.setCsvProps(convertCsv(data));
       })
-      .catch((e) => {
+      .catch(e => {
         console.error(e);
       });
   } else if (/\.json$/i.test(fileName)) {
@@ -67,7 +67,7 @@ function handleFileChange(event: Event) {
       .then((data: string) => {
         mainStore.setCsvProps(JSON.parse(data));
       })
-      .catch((e) => {
+      .catch(e => {
         console.error(e);
       });
   } else {
@@ -82,7 +82,7 @@ function handleEncodingChange() {
       .then((data: string) => {
         mainStore.setCsvProps(convertCsv(data) as CsvContent[]);
       })
-      .catch((e) => {
+      .catch(e => {
         console.error(e);
       });
   }

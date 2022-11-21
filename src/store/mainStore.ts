@@ -1,20 +1,20 @@
-import { keys } from "lodash-es";
-import { defineStore } from "pinia";
-import { CsvContent } from "../types/store";
+import { keys } from 'lodash-es';
+import { defineStore } from 'pinia';
+import { CsvContent } from '../types/store';
 
 export const useMainStore = defineStore({
-  id: "main",
+  id: 'main',
   state: () => {
     return {
       csvData: {
-        file: new File([], ""),
-        encoding: "utf-8",
+        file: new File([], ''),
+        encoding: 'utf-8',
         content: [] as CsvContent[],
         headings: [] as string[],
       },
       customSettings: {
         selectedVariables: [] as string[],
-        participantIdentifier: "",
+        participantIdentifier: '',
       },
       analysisSettings: {
         analysisGroups: [],
@@ -24,13 +24,13 @@ export const useMainStore = defineStore({
   },
   persist: true,
   getters: {
-    getCsvHeadings: (state) => state.csvData.headings,
-    getHeadingContent: (state) => (headingString: string) =>
-      state.csvData.content.map((record) => record[headingString]),
-    getSelectedVariables: (state) => state.customSettings.selectedVariables,
-    getEncoding: (state) => state.csvData.encoding,
-    getFile: (state) => state.csvData.file,
-    getParticipantIdentifier: (state) =>
+    getCsvHeadings: state => state.csvData.headings,
+    getHeadingContent: state => (headingString: string) =>
+      state.csvData.content.map(record => record[headingString]),
+    getSelectedVariables: state => state.customSettings.selectedVariables,
+    getEncoding: state => state.csvData.encoding,
+    getFile: state => state.csvData.file,
+    getParticipantIdentifier: state =>
       state.customSettings.participantIdentifier,
   },
   actions: {
@@ -47,7 +47,7 @@ export const useMainStore = defineStore({
       const selectedVariables: string[] = this.customSettings.selectedVariables;
       if (selectedVariables.includes(heading)) {
         this.customSettings.selectedVariables = selectedVariables.filter(
-          (variable) => variable !== heading
+          variable => variable !== heading
         );
       } else {
         this.customSettings.selectedVariables = [...selectedVariables, heading];

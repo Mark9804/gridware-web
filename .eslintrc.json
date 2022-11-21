@@ -12,14 +12,14 @@
     "@vue/eslint-config-typescript",
     "prettier"
   ],
+  "ignorePatterns": ["vite-env.d.ts"],
   "plugins": ["vue", "import", "sort-exports", "@typescript-eslint"],
   "rules": {
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "max-len": ["error", { "code": 120 }],
     "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "double"],
+    "quotes": ["error", "single"],
     "semi": ["warn", "always"],
-    "sort-exports/sort-exports": ["off"],
     "comma-dangle": [
       "error",
       {

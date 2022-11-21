@@ -32,9 +32,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useMainStore } from "../store/mainStore.js";
-import randomString from "../utils/randomString";
+import { computed } from 'vue';
+import { useMainStore } from '../store/mainStore.js';
+import randomString from '../utils/randomString';
 
 const props = defineProps({
   filterEnabled: {
@@ -73,10 +73,10 @@ const maxRows = computed<number>(() => {
   height: 20rem;
   overflow: scroll;
   font-size: 0.9rem;
-  font-family: "JetBrains Mono", -apple-system, "system ui", monospace;
+  font-family: 'JetBrains Mono', -apple-system, 'system ui', monospace;
 
   &:empty::after {
-    content: "No data to preview";
+    content: 'No data to preview';
     color: #ccc;
     font-style: italic;
     font-weight: bold;
@@ -113,13 +113,13 @@ const maxRows = computed<number>(() => {
     padding: 0.1rem 0.5rem;
 
     &:empty::after {
-      content: "NaN";
+      content: 'NaN';
       color: #808080;
     }
   }
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   margin-left: 0;
 }
 </style>

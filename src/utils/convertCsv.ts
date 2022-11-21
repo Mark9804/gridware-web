@@ -1,11 +1,11 @@
-import { CsvContent } from "../types/store";
+import { CsvContent } from '../types/store';
 
-function convertCsv(csvText: string, delimiter = ","): CsvContent[] {
+function convertCsv(csvText: string, delimiter = ','): CsvContent[] {
   const lines: string[] = [];
-  const linesArray = csvText.split("\n");
+  const linesArray = csvText.split('\n');
   // for trimming and deleting extra space
-  linesArray.forEach((e) => {
-    const row = e.replace(/\s+,+|,+\s+/g, ",").trim();
+  linesArray.forEach(e => {
+    const row = e.replace(/\s+,+|,+\s+/g, ',').trim();
     lines.push(row);
   });
   lines.splice(lines.length - 1, 1);

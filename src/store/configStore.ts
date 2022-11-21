@@ -1,17 +1,17 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
 export const useConfigStore = defineStore({
-  id: "config",
+  id: 'config',
   state: () => {
     return {
-      language: "en",
-      theme: "light",
+      language: 'en',
+      theme: 'light',
     };
   },
   // persist: true,
   getters: {
-    getLanguage: (state) => state.language,
-    getTheme: (state) => state.theme,
+    getLanguage: state => state.language,
+    getTheme: state => state.theme,
   },
   actions: {
     setLanguage(language: string) {

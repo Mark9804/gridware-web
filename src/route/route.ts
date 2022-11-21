@@ -1,31 +1,31 @@
-import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
-    name: "Home",
-    component: () => import("../components/GridWareHome.vue"),
+    path: '/',
+    name: 'Home',
+    component: () => import('../components/GridWareHome.vue'),
   },
   {
-    path: "/convert",
-    name: "Convert",
+    path: '/convert',
+    name: 'Convert',
     children: [
       {
-        path: "to-gridware",
-        name: "ConvertToGridwareFormat",
-        component: () => import("../components/ConvertToGridwareFormat.vue"),
+        path: 'to-gridware',
+        name: 'ConvertToGridwareFormat',
+        component: () => import('../components/ConvertToGridwareFormat.vue'),
       },
       {
-        path: "from-gridware",
-        name: "ConvertFromGridwareFormat",
-        component: () => import("../components/ConvertFromGridwareFormat.vue"),
+        path: 'from-gridware',
+        name: 'ConvertFromGridwareFormat',
+        component: () => import('../components/ConvertFromGridwareFormat.vue'),
       },
     ],
   },
   {
-    path: "/analyze",
-    name: "Analyze",
-    component: () => import("../components/AnalyzeHome.vue"),
+    path: '/analyze',
+    name: 'Analyze',
+    component: () => import('../components/AnalyzeHome.vue'),
   },
 ];
 

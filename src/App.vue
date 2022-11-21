@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ref, ref } from "vue";
+import { Ref, ref } from 'vue';
 
 interface MenuHoverStatus {
   [key: string]: boolean;
@@ -86,7 +86,7 @@ function toggleSubMenu(menu: keyof MenuHoverStatus) {
         background-color: magenta;
         width: 100%;
         height: 0;
-        content: "";
+        content: '';
       }
 
       &:is(.router-link-exact-active, .router-link-active)::after {

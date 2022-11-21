@@ -50,11 +50,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { computed } from "vue";
-import { useMainStore } from "../store/mainStore";
-import EncodingSelector from "./EncodingSelector.vue";
-import TableViewer from "./TableViewer.vue";
+import { ref } from 'vue';
+import { computed } from 'vue';
+import { useMainStore } from '../store/mainStore';
+import EncodingSelector from './EncodingSelector.vue';
+import TableViewer from './TableViewer.vue';
 
 const maxRowCount = ref(30);
 const mainStore = useMainStore();
@@ -78,14 +78,14 @@ const participantIdentifier = computed<string>(() => {
 
 function handleSelect(selectionType: string) {
   switch (selectionType) {
-    case "all":
+    case 'all':
       if (allChecked.value) {
         mainStore.deselectAllVariables();
       } else {
         mainStore.selectAllVariables();
       }
       break;
-    case "none":
+    case 'none':
       if (allUnchecked.value) {
         // do nothing
       } else {
@@ -108,9 +108,9 @@ function handleIdentifierChange(event: Event) {
   grid-template-rows: max-content max-content;
   grid-template-columns: max-content max-content;
   grid-template-areas:
-    "table options-participant-identifier"
-    "table options-variable-selection"
-    "table options-encoding-selection";
+    'table options-participant-identifier'
+    'table options-variable-selection'
+    'table options-encoding-selection';
 }
 
 .preview-table {
@@ -131,7 +131,7 @@ function handleIdentifierChange(event: Event) {
   align-items: flex-start;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   margin-left: 0;
 }
 </style>
