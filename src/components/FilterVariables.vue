@@ -59,20 +59,18 @@ import TableViewer from './TableViewer.vue';
 const maxRowCount = ref(30);
 const mainStore = useMainStore();
 
-const checkedVariables = computed<string[]>(
-  () => mainStore.getSelectedVariables
-);
-const allHeadings = computed<string[]>(() => mainStore.getCsvHeadings);
+const checkedVariables = computed(() => mainStore.getSelectedVariables);
+const allHeadings = computed(() => mainStore.getCsvHeadings);
 
-const allChecked = computed<boolean>(() => {
+const allChecked = computed(() => {
   return allHeadings.value.length === checkedVariables.value.length;
 });
 
-const allUnchecked = computed<boolean>(() => {
+const allUnchecked = computed(() => {
   return checkedVariables.value.length === 0;
 });
 
-const participantIdentifier = computed<string>(() => {
+const participantIdentifier = computed(() => {
   return mainStore.getParticipantIdentifier;
 });
 
@@ -133,5 +131,14 @@ function handleIdentifierChange(event: Event) {
 
 input[type='checkbox'] {
   margin-left: 0;
+}
+
+input[type='number'] {
+  margin: 0 0.5rem;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  width: 3rem;
+  text-align: center;
 }
 </style>

@@ -21,7 +21,7 @@
         class="table-content"
         v-for="content in mainStore
           .getHeadingContent(heading)
-          .slice(0, maxRows)"
+          .slice(0, maxRowCount)"
         :key="randomString(4)"
       >
         {{ content }}
@@ -56,7 +56,7 @@ function updateCheckedVariables(heading: string) {
   mainStore.setSelectedVariables(heading);
 }
 
-const maxRows = computed<number>(() => {
+const maxRowCount = computed<number>(() => {
   return !isNaN(props.maxRows) ? Math.max(props.maxRows, 0) || 30 : 30;
 });
 </script>

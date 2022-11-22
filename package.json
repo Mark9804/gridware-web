@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "format": "prettier --config .prettierrc.cjs -uw ./src/ *.md",
+    "format": "prettier --config .prettierrc.json -uw ./src/ *.md *.ts",
     "build": "pnpm format; vue-tsc && vite build",
     "build:github": "pnpm build && cp ./dist/index.html ./dist/404.html",
     "preview": "pnpm build; vite preview --host",

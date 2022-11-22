@@ -24,14 +24,13 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 import { useMainStore } from '../store/mainStore.js';
-import { CsvContent } from '../types/store';
 import { convertCsv } from '../utils/convertCsv';
 import AnalyzeSelectedVariables from './AnalyzeSelectedVariables.vue';
 import FilterVariables from './FilterVariables.vue';
 
 const mainStore = useMainStore();
 
-const fileEncoding = computed<string>(() => {
+const fileEncoding = computed(() => {
   return mainStore.getEncoding;
 });
 
@@ -70,8 +69,6 @@ function handleFileChange(event: Event) {
       .catch(e => {
         console.error(e);
       });
-  } else {
-    // do nothing
   }
 }
 
@@ -80,7 +77,7 @@ function handleEncodingChange() {
   if (file?.name) {
     readFile(file)
       .then((data: string) => {
-        mainStore.setCsvProps(convertCsv(data) as CsvContent[]);
+        mainStore.setCsvProps(convertCsv(data));
       })
       .catch(e => {
         console.error(e);
