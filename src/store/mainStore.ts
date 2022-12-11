@@ -1,9 +1,10 @@
 import { keys } from 'lodash-es';
 import { defineStore } from 'pinia';
+import { AnalysisGroup } from '../types/analysisGroups';
 import { CsvContent } from '../types/store';
 
 export const useMainStore = defineStore({
-  id: 'main',
+  id: 'gridware',
   state: () => {
     return {
       csvData: {
@@ -17,7 +18,7 @@ export const useMainStore = defineStore({
         participantIdentifier: '',
       },
       analysisSettings: {
-        analysisGroups: [],
+        analysisGroups: [] as AnalysisGroup[],
         mergeSameVariableGroups: false,
       },
     };
@@ -32,6 +33,14 @@ export const useMainStore = defineStore({
     getFile: state => state.csvData.file,
     getParticipantIdentifier: state =>
       state.customSettings.participantIdentifier,
+    getAnalysisGroups: state => state.analysisSettings.analysisGroups,
+    getAnalysisGroupById: state => (id: string) => {
+      return state.analysisSettings.analysisGroups.find(
+        group => group.id === id
+      );
+    },
+    getMergeSameSettings: state =>
+      state.analysisSettings.mergeSameVariableGroups,
   },
   actions: {
     submitFile(file: File) {
@@ -42,6 +51,8 @@ export const useMainStore = defineStore({
       const headings = keys(csvContent[0]);
       this.csvData.headings = headings;
       this.customSettings.selectedVariables = headings;
+      this.customSettings.participantIdentifier =
+        headings.length > 0 ? headings[0] : '';
     },
     setSelectedVariables(heading: string) {
       const selectedVariables: string[] = this.customSettings.selectedVariables;
@@ -64,6 +75,36 @@ export const useMainStore = defineStore({
     },
     setParticipantIdentifier(identifier: string) {
       this.customSettings.participantIdentifier = identifier;
+    },
+    updateAnalysisGroup(group: AnalysisGroup) {
+      const analysisGroups = this.analysisSettings.analysisGroups;
+      const index = analysisGroups.findIndex(
+        analysisGroup => analysisGroup.id === group.id
+      );
+      if (index !== -1) {
+        analysisGroups[index] = group;
+        this.analysisSettings.analysisGroups = analysisGroups;
+      } else {
+        this.analysisSettings.analysisGroups = [...analysisGroups, group];
+      }
+    },
+    updateVariableSettingById(
+      groupId: string,
+      axis: 'x' | 'y',
+      variableName: string,
+      variableValues: string[]
+    ) {
+      const analysisGroups = this.analysisSettings.analysisGroups;
+      const index = analysisGroups.findIndex(
+        analysisGroup => analysisGroup.id === groupId
+      );
+      if (index !== -1) {
+        analysisGroups[index][`${axis}_variable`] = {
+          variable_name: variableName,
+          variable_values: variableValues,
+        };
+        this.analysisSettings.analysisGroups = analysisGroups;
+      }
     },
   },
 });

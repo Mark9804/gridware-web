@@ -14,7 +14,7 @@
           :checked="checkedVariables.includes(heading)"
           @change="updateCheckedVariables(heading)"
         />
-        <div>{{ heading }}</div>
+        <span>{{ heading }}</span>
       </div>
       <!-- eslint-disable vue/valid-v-for -->
       <div
@@ -33,8 +33,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useMainStore } from '../store/mainStore.js';
-import randomString from '../utils/randomString';
+import { useMainStore } from '../../store/mainStore';
+import randomString from '../../utils/randomString';
 
 const props = defineProps({
   filterEnabled: {
@@ -105,7 +105,15 @@ const maxRowCount = computed<number>(() => {
     display: flex;
     border-bottom: 1px solid var(--color-border, #666);
     background-color: var(--color-background-label);
-    padding: 0.15rem 0.5rem;
+    padding: 0 0.5rem;
+    height: 1.5rem;
+    position: sticky;
+    top: 0;
+    align-items: center;
+
+    span {
+      white-space: nowrap;
+    }
   }
 
   .table-content {

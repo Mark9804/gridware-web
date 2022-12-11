@@ -1,14 +1,17 @@
 <template>
-  <div class="fill-screen flex-vertical">
-    <h2>Import your data</h2>
+  <div class="container-analyzer fill-screen">
     <div>
-      <p>To start, please import your data as csv or json format.</p>
-      <p>
-        <strong
-          >The data will stay on your computer and will not be uploaded</strong
-        >.
-      </p>
-      <input type="file" @change="handleFileChange" />
+      <h2>Import your data</h2>
+      <div>
+        <p>To start, please import your data as csv or json format.</p>
+        <p>
+          <strong
+            >The data will stay on your computer and will not be
+            uploaded</strong
+          >.
+        </p>
+        <input type="file" @change="handleFileChange" />
+      </div>
     </div>
 
     <div class="preview-container">
@@ -16,16 +19,16 @@
     </div>
 
     <div>
-      <analyze-selected-variables />
+      <build-variable-groups />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, watch } from 'vue';
-import { useMainStore } from '../store/mainStore.js';
-import { convertCsv } from '../utils/convertCsv';
-import AnalyzeSelectedVariables from './AnalyzeSelectedVariables.vue';
+import { useMainStore } from '../../store/mainStore';
+import { convertCsv } from '../../utils/convertCsv';
+import BuildVariableGroups from './BuildVariableGroups.vue';
 import FilterVariables from './FilterVariables.vue';
 
 const mainStore = useMainStore();
@@ -89,6 +92,10 @@ watch(fileEncoding, handleEncodingChange);
 </script>
 
 <style scoped lang="scss">
+.container-analyzer {
+  display: grid;
+}
+
 h2 {
   margin: 0;
   padding: 0;

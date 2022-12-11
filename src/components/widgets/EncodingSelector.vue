@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useMainStore } from '../store/mainStore';
+import { useMainStore } from '../../store/mainStore';
 
 const mainStore = useMainStore();
 const selectedEncoding = computed<string>(() => mainStore.getEncoding);

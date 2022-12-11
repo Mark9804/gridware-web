@@ -3,7 +3,7 @@
   <p>You can preview your variables here.</p>
   <p>
     For performance reasons, only the first
-    <input type="number" v-model="maxRowCount" min="1" />
+    <input type="number" v-model.number="maxRowCount" min="1" />
     lines of data are rendered.
   </p>
   <div class="preview-container">
@@ -52,9 +52,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { computed } from 'vue';
-import { useMainStore } from '../store/mainStore';
-import EncodingSelector from './EncodingSelector.vue';
-import TableViewer from './TableViewer.vue';
+import { useMainStore } from '../../store/mainStore';
+import EncodingSelector from '../widgets/EncodingSelector.vue';
+import TableViewer from '../widgets/TableViewer.vue';
 
 const maxRowCount = ref(30);
 const mainStore = useMainStore();

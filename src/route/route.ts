@@ -13,19 +13,21 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'to-gridware',
         name: 'ConvertToGridwareFormat',
-        component: () => import('../components/ConvertToGridwareFormat.vue'),
+        component: () =>
+          import('../components/convert/ConvertToGridwareFormat.vue'),
       },
       {
         path: 'from-gridware',
         name: 'ConvertFromGridwareFormat',
-        component: () => import('../components/ConvertFromGridwareFormat.vue'),
+        component: () =>
+          import('../components/convert/ConvertFromGridwareFormat.vue'),
       },
     ],
   },
   {
     path: '/analyze',
     name: 'Analyze',
-    component: () => import('../components/AnalyzeHome.vue'),
+    component: () => import('../components/analyze/AnalyzeHome.vue'),
   },
 ];
 
