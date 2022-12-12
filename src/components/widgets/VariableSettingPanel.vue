@@ -47,8 +47,11 @@
       </div>
 
       <div class="preview">
-        <div class="title">preview</div>
+        <div class="title">Preview</div>
         <div class="preview-grid" v-if="!isParticipantIdIncluded">
+          <div class="x_legend">
+            {{ group.x_variable.variable_name }}
+          </div>
           <div class="x-axis">
             <span
               v-for="x in mainStore
@@ -71,6 +74,9 @@
             <div v-for="n in cellCount" class="preview-cell"></div>
           </div>
 
+          <div class="y_legend">
+            {{ group.y_variable.variable_name }}
+          </div>
           <div class="y-axis">
             <span
               v-for="y in mainStore
@@ -199,6 +205,10 @@ const isParticipantIdIncluded = computed(() => {
     }
   }
 
+  .content-row-title {
+    font-weight: bold;
+  }
+
   .preview {
     grid-area: preview;
     display: flex;
@@ -206,6 +216,11 @@ const isParticipantIdIncluded = computed(() => {
     padding-bottom: 1rem;
     width: 100%;
     align-items: center;
+
+    .title {
+      margin-right: auto;
+      font-weight: bold;
+    }
 
     .preview-grid-error {
       color: red;
@@ -215,10 +230,16 @@ const isParticipantIdIncluded = computed(() => {
     .preview-grid {
       display: grid;
       grid-template-areas:
-        'y-axis grid-content'
-        '. x-axis';
-      grid-template-rows: max-content min-content;
-      grid-template-columns: min-content max-content;
+        'y-legend y-axis grid-content'
+        'y-legend . x-axis'
+        '. x-legend x-legend';
+      grid-template-rows: max-content min-content min-content;
+      grid-template-columns: min-content min-content max-content;
+
+      .x_legend {
+        grid-area: x-legend;
+        margin-right: 1rem;
+      }
 
       .x-axis {
         display: grid;
@@ -237,11 +258,20 @@ const isParticipantIdIncluded = computed(() => {
         }
       }
 
+      .y_legend {
+        grid-area: y-legend;
+        margin-bottom: 1rem;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+      }
+
       .y-axis {
         display: grid;
         grid-area: y-axis;
-        grid-auto-flow: row;
+        grid-auto-flow: column;
         place-items: center;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
       }
     }
   }
