@@ -6,15 +6,17 @@
   "scripts": {
     "dev": "vite",
     "format": "prettier --config .prettierrc.json -uw ./src/ *.md *.ts",
-    "build": "pnpm format; vue-tsc && vite build",
+    "build": "pnpm format; vite build",
     "build:github": "pnpm build && cp ./dist/index.html ./dist/404.html",
     "preview": "pnpm build; vite preview --host",
     "check": "eslint --config ./.eslintrc.json ./src/ --ext .js,.ts,.vue"
   },
   "dependencies": {
+    "@vue/compiler-sfc": "3.x",
     "lodash-es": "4.17.21",
     "pinia": "2.0.28",
     "pinia-plugin-persistedstate": "3.0.1",
+    "uuid": "9.0.0",
     "vue": "3.2.45",
     "vue-router": "4.1.6"
   },
@@ -22,6 +24,7 @@
     "@rushstack/eslint-patch": "1.2.0",
     "@trivago/prettier-plugin-sort-imports": "4.0.0",
     "@types/lodash-es": "4.17.6",
+    "@types/uuid": "9.0.0",
     "@typescript-eslint/eslint-plugin": "5.46.0",
     "@typescript-eslint/parser": "5.46.0",
     "@vitejs/plugin-legacy": "2.3.1",

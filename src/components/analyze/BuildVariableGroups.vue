@@ -1,6 +1,5 @@
 <template>
   <h2>Build Your Variable Groups</h2>
-  <p></p>
   <variable-group-builder />
 </template>
 

@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+import { v4 as uuidv4 } from 'uuid';
 import { computed } from 'vue';
 import { useMainStore } from '../../store/mainStore';
 import { AnalysisGroup } from '../../types/analysisGroups';
@@ -37,11 +38,7 @@ function initGroup() {
 }
 
 function getUniqueKey() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    const r = (Math.random() * 16) | 0,
-      v = 'x' === c ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
+  return uuidv4();
 }
 </script>
 
