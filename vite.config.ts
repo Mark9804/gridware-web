@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
@@ -75,20 +76,15 @@ export default defineConfig({
       // uncomment to unregister service worker
       selfDestroying: true,
     }),
-    viteCompression(),
-    visualizer({
-      title: 'GridWare Web',
-      template: 'treemap',
-      gzipSize: true,
-      brotliSize: true,
-    }),
+    // viteCompression(),
+    // visualizer({
+    //   title: 'GridWare Web',
+    //   template: 'treemap',
+    //   gzipSize: true,
+    //   brotliSize: true,
+    // }),
   ],
   build: {
     emptyOutDir: true,
-    minify: 'terser',
-    terserOptions: {
-      toplevel: true,
-      safari10: true,
-    },
   },
 });

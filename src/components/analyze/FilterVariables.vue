@@ -13,35 +13,30 @@
       :max-rows="maxRowCount"
     ></table-viewer>
 
-    <div class="participant-identifier">
-      <span>Identifier: </span>
-      <select :value="participantIdentifier" @change="handleIdentifierChange">
-        <option
-          v-for="heading in mainStore.getCsvHeadings"
-          :value="heading"
-          :key="heading"
-        >
-          {{ heading }}
-        </option>
-      </select>
-    </div>
+    <n-space class="participant-identifier" align="center">
+      <n-tag type="info" :bordered="false">Identifier</n-tag>
+      <n-select
+        :value="participantIdentifier"
+        :options="headingValues"
+        @update:value="handleIdentifierChange"
+        filterable
+      />
+    </n-space>
 
-    <div class="filter-variable-options">
-      <div>
-        <input
-          type="checkbox"
-          :checked="allChecked"
-          @change="handleSelect('all')"
+    <n-space vertical class="filter-variable-options">
+      <n-space>
+        <n-switch
+          :value="allChecked"
+          @update:value="handleSelect('all')"
         /><span>Select All</span>
-      </div>
-      <div>
-        <input
-          type="checkbox"
-          :checked="allUnchecked"
-          @change="handleSelect('none')"
+      </n-space>
+      <n-space>
+        <n-switch
+          :value="allUnchecked"
+          @update:value="handleSelect('none')"
         /><span>Deselect All</span>
-      </div>
-    </div>
+      </n-space>
+    </n-space>
 
     <div class="encoding-options">
       <encoding-selector />
@@ -50,8 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { computed } from 'vue';
+import { NSelect, NSpace, NSwitch, NTag } from 'naive-ui';
+import { computed, ref } from 'vue';
 import { useMainStore } from '../../store/mainStore';
 import EncodingSelector from '../widgets/EncodingSelector.vue';
 import TableViewer from '../widgets/TableViewer.vue';
@@ -61,6 +56,15 @@ const mainStore = useMainStore();
 
 const checkedVariables = computed(() => mainStore.getSelectedVariables);
 const allHeadings = computed(() => mainStore.getCsvHeadings);
+
+const headingValues = computed(() => {
+  return allHeadings.value.map(heading => {
+    return {
+      label: heading,
+      value: heading,
+    };
+  });
+});
 
 const allChecked = computed(() => {
   return allHeadings.value.length === checkedVariables.value.length;
@@ -93,9 +97,8 @@ function handleSelect(selectionType: string) {
   }
 }
 
-function handleIdentifierChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  mainStore.setParticipantIdentifier(target.value);
+function handleIdentifierChange(target: string) {
+  mainStore.setParticipantIdentifier(target);
 }
 </script>
 
@@ -115,6 +118,10 @@ function handleIdentifierChange(event: Event) {
   grid-area: table;
 }
 
+.participant-identifier {
+  grid-area: options-participant-identifier;
+}
+
 .filter-variable-options {
   display: flex;
   grid-area: options-variable-selection;
@@ -127,10 +134,6 @@ function handleIdentifierChange(event: Event) {
   grid-area: options-encoding-selection;
   flex-direction: column;
   align-items: flex-start;
-}
-
-input[type='checkbox'] {
-  margin-left: 0;
 }
 
 input[type='number'] {

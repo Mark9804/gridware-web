@@ -70,6 +70,10 @@ function toggleSubMenu(menu: keyof MenuHoverStatus) {
   background-color: var(--color-navbar-background);
   width: 100vw;
 
+  a {
+    color: #000;
+  }
+
   .level-1 {
     display: flex;
     position: relative;
@@ -87,7 +91,7 @@ function toggleSubMenu(menu: keyof MenuHoverStatus) {
         bottom: 0;
         left: 0;
         transition: all 0.125s ease-in-out;
-        background-color: magenta;
+        background-color: #4b9e5f;
         width: 100%;
         height: 0;
         content: '';

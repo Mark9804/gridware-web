@@ -48,6 +48,7 @@
 
       <div class="preview">
         <div class="title">Preview</div>
+        <div>Below will give you a look of how the grid base look like.</div>
         <div class="preview-grid" v-if="!isParticipantIdIncluded">
           <div class="x_legend">
             {{ group.x_variable.variable_name }}

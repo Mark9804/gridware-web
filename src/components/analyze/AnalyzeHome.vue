@@ -18,7 +18,7 @@
       <filter-variables v-if="mainStore.getCsvHeadings.length !== 0" />
     </div>
 
-    <div>
+    <div v-if="mainStore.getCsvHeadings.length !== 0">
       <build-variable-groups />
     </div>
   </div>

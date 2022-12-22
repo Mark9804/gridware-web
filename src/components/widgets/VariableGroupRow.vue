@@ -46,7 +46,7 @@ defineProps({
   },
 });
 
-const showSettings = ref(true);
+const showSettings = ref(false);
 </script>
 
 <style scoped lang="scss">

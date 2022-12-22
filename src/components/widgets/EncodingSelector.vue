@@ -1,25 +1,26 @@
 <template>
-  <select :value="selectedEncoding" @change="submitEncodingChange">
-    <option
-      v-for="encoding in encodingOptionList"
-      :key="encoding.label"
-      :value="encoding.value"
-    >
-      {{ encoding.label }}
-    </option>
-  </select>
+  <n-space align="center">
+    <n-tag type="info" :bordered="false">Encoding</n-tag>
+    <n-select
+      filterable
+      :value="selectedEncoding"
+      :options="encodingOptionList"
+      @update:value="submitEncodingChange"
+      :fallback-option="false"
+    />
+  </n-space>
 </template>
 
 <script setup lang="ts">
+import { NSelect, NSpace, NTag } from 'naive-ui';
 import { computed } from 'vue';
 import { useMainStore } from '../../store/mainStore';
 
 const mainStore = useMainStore();
 const selectedEncoding = computed<string>(() => mainStore.getEncoding);
 
-function submitEncodingChange(event: Event) {
-  const target = event.target as HTMLSelectElement;
-  mainStore.setEncoding(target.value);
+function submitEncodingChange(target: string) {
+  mainStore.setEncoding(target);
 }
 
 interface EncodingOption {

@@ -7,12 +7,11 @@
       :key="heading"
     >
       <div class="label">
-        <input
+        <n-checkbox
           type="checkbox"
           v-if="filterEnabled"
-          :value="heading"
           :checked="checkedVariables.includes(heading)"
-          @change="updateCheckedVariables(heading)"
+          @update:checked="updateCheckedVariables(heading)"
         />
         <span>{{ heading }}</span>
       </div>
@@ -32,6 +31,7 @@
 </template>
 
 <script setup lang="ts">
+import { NCheckbox } from 'naive-ui';
 import { computed } from 'vue';
 import { useMainStore } from '../../store/mainStore';
 import randomString from '../../utils/randomString';
