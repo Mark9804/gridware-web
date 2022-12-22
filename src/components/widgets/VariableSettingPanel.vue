@@ -1,53 +1,38 @@
 <template>
-  <div class="settings-panel-container">
-    <div class="settings-panel shadow-farther">
-      <div class="banner">
-        <div class="title">Configure variables</div>
-        <img
-          class="close-button"
-          src="/src/assets/close-button.svg"
-          @click="handleClose"
-        />
-      </div>
-
-      <div class="content">
-        <div class="content-row">
-          <div class="content-row-title">X-axis variable</div>
-          <select
+  <n-space class="settings-panel-container" justify="center" align="center">
+    <n-card
+      title="Configure variables"
+      class="settings-panel"
+      closable
+      @close="handleClose"
+      :bordered="false"
+    >
+      <n-space vertical>
+        <n-space align="center">
+          <n-tag type="info" :bordered="false">X-axis variable</n-tag>
+          <n-select
             class="variable-select"
-            @change="handleAxisVariableChange($event, 'x')"
+            :options="variableOptions"
+            @update:value="handleXAxisVariableChange"
             :value="group.x_variable.variable_name"
-          >
-            <option
-              v-for="variable in selectedVariables"
-              :value="variable"
-              :key="variable"
-            >
-              {{ variable }}
-            </option>
-          </select>
-        </div>
+            filterable
+          />
+        </n-space>
 
-        <div class="content-row">
-          <div class="content-row-title">Y-axis variable</div>
-          <select
+        <n-space align="center">
+          <n-tag type="info" :bordered="false">Y-axis variable</n-tag>
+          <n-select
             class="variable-select"
-            @change="handleAxisVariableChange($event, 'y')"
+            :options="variableOptions"
+            @update:value="handleYAxisVariableChange"
             :value="group.y_variable.variable_name"
-          >
-            <option
-              v-for="variable in selectedVariables"
-              :value="variable"
-              :key="variable"
-            >
-              {{ variable }}
-            </option>
-          </select>
-        </div>
-      </div>
+            filterable
+          />
+        </n-space>
+      </n-space>
 
       <div class="preview">
-        <div class="title">Preview</div>
+        <div class="preview-title">Preview</div>
         <div>Below will give you a look of how the grid base look like.</div>
         <div class="preview-grid" v-if="!isParticipantIdIncluded">
           <div class="x_legend">
@@ -94,11 +79,12 @@
           Participant ID cannot be included
         </div>
       </div>
-    </div>
-  </div>
+    </n-card>
+  </n-space>
 </template>
 
 <script setup lang="ts">
+import { NCard, NSelect, NSpace, NTag } from 'naive-ui';
 import { PropType, computed } from 'vue';
 import { useMainStore } from '../../store/mainStore';
 import { AnalysisGroup } from '../../types/analysisGroups';
@@ -118,14 +104,32 @@ const selectedVariables = computed(() => {
   return mainStore.getSelectedVariables;
 });
 
-function handleAxisVariableChange(event: Event, axis: 'x' | 'y') {
-  const target = event.target as HTMLSelectElement;
-  const value = target.value;
+const variableOptions = computed(() => {
+  return selectedVariables.value.map(variable => {
+    return {
+      value: variable,
+      label: variable,
+    };
+  });
+});
 
-  const allValues = mainStore.getHeadingContent(value);
+function handleAxisVariableChange(target: string, axis: 'x' | 'y') {
+  const allValues = mainStore.getHeadingContent(target);
   const uniqueValue = [...new Set(allValues)] as string[];
+  mainStore.updateVariableSettingById(
+    props.group.id,
+    axis,
+    target,
+    uniqueValue
+  );
+}
 
-  mainStore.updateVariableSettingById(props.group.id, axis, value, uniqueValue);
+function handleXAxisVariableChange(target: string) {
+  handleAxisVariableChange(target, 'x');
+}
+
+function handleYAxisVariableChange(target: string) {
+  handleAxisVariableChange(target, 'y');
 }
 
 const cellCountX = computed(() => {
@@ -157,58 +161,7 @@ const isParticipantIdIncluded = computed(() => {
 
 <style scoped lang="scss">
 .settings-panel {
-  padding: 1rem;
   background-color: var(--color-navbar-background);
-  display: grid;
-  grid-template-areas:
-    'banner'
-    'content'
-    'preview';
-  grid-gap: 1rem;
-  //align-items: center;
-  justify-items: start;
-
-  .banner {
-    grid-area: banner;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: solid 1px #ccc;
-    width: 100%;
-
-    .title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      justify-self: flex-start;
-    }
-
-    .close-button {
-      justify-self: end;
-      width: 1.5rem;
-      height: 1.5rem;
-      cursor: pointer;
-      margin-left: 2rem;
-    }
-  }
-
-  .content {
-    display: grid;
-    grid-auto-flow: row;
-    grid-gap: 0.5rem;
-    width: 100%;
-    grid-area: content;
-
-    .content-row {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-  }
-
-  .content-row-title {
-    font-weight: bold;
-  }
 
   .preview {
     grid-area: preview;
@@ -218,8 +171,10 @@ const isParticipantIdIncluded = computed(() => {
     width: 100%;
     align-items: center;
 
-    .title {
-      margin-right: auto;
+    .preview-title {
+      width: 100%;
+      text-align: start;
+      font-size: 1.25rem;
       font-weight: bold;
     }
 

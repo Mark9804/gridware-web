@@ -8,7 +8,6 @@
     >
       <div class="label">
         <n-checkbox
-          type="checkbox"
           v-if="filterEnabled"
           :checked="checkedVariables.includes(heading)"
           @update:checked="updateCheckedVariables(heading)"
@@ -125,9 +124,5 @@ const maxRowCount = computed<number>(() => {
       color: #808080;
     }
   }
-}
-
-input[type='checkbox'] {
-  margin-left: 0;
 }
 </style>
