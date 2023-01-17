@@ -14,8 +14,8 @@
       </div>
     </div>
 
-    <div class="preview-container">
-      <filter-variables v-if="mainStore.getCsvHeadings.length !== 0" />
+    <div v-if="mainStore.getCsvHeadings.length !== 0">
+      <filter-variables />
     </div>
 
     <div v-if="mainStore.getCsvHeadings.length !== 0">

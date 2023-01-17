@@ -14,17 +14,16 @@
         />
         <span>{{ heading }}</span>
       </div>
-      <!-- eslint-disable vue/valid-v-for -->
+      <!-- eslint-disable vue/valid-v-for,vue/require-v-for-key -->
       <div
         class="table-content"
         v-for="content in mainStore
           .getHeadingContent(heading)
           .slice(0, maxRowCount)"
-        :key="randomString(4)"
       >
         {{ content }}
       </div>
-      <!-- eslint-enable vue/valid-v-for -->
+      <!-- eslint-enable vue/valid-v-for,vue/require-v-for-key -->
     </div>
   </div>
 </template>
@@ -33,7 +32,6 @@
 import { NCheckbox } from 'naive-ui';
 import { computed } from 'vue';
 import { useMainStore } from '../../store/mainStore';
-import randomString from '../../utils/randomString';
 
 const props = defineProps({
   filterEnabled: {
