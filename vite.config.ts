@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+import autoprefixer from 'autoprefixer';
+import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
@@ -11,6 +13,13 @@ import Components from 'unplugin-vue-components/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      '@assets': path.resolve(__dirname, 'src/assets'),
+      '@components': path.resolve(__dirname, 'src/components'),
+    },
+  },
   plugins: [
     vue(),
     AutoImport({

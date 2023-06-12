@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { PropType, ref } from 'vue';
-import { AnalysisGroup } from '../../types/analysisGroups';
+import { AnalysisGroup } from '@/types/AnalysisGroups';
 import VariableSettingPanel from './VariableSettingPanel.vue';
 
 defineProps({

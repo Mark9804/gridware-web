@@ -7,17 +7,33 @@
       @close="handleClose"
       :bordered="false"
     >
-      <n-space vertical>
-        <n-space align="center">
-          <n-tag type="info" :bordered="false">X-axis variable</n-tag>
-          <n-select
-            class="variable-select"
-            :options="variableOptions"
-            @update:value="handleXAxisVariableChange"
-            :value="group.x_variable.variable_name"
-            filterable
-          />
-        </n-space>
+      <n-space vertical align="start">
+        <n-card title="X-axis variable" size="small">
+          <n-space vertical align="start">
+            <n-space>
+              <n-tag type="primary" :bordered="false">variable name</n-tag>
+              <n-input
+                v-model:value="xAxisVariableName"
+                placeholder="Enter variable name"
+                @update:value="handleXAxisVariableNameChange"
+                size="small"
+              />
+            </n-space>
+            <n-space>
+              <n-tag type="primary" :bordered="false">variable type</n-tag>
+              <n-select
+                :options="variableTypeOptions"
+                v-model:value="xAxisVariableType"
+                @update:value="handleXAxisVariableTypeChange"
+                size="small"
+              />
+            </n-space>
+            <n-space>
+              <n-tag type="primary" :bordered="false">variables</n-tag>
+            </n-space>
+            <n-space> </n-space>
+          </n-space>
+        </n-card>
 
         <n-space align="center">
           <n-tag type="info" :bordered="false">Y-axis variable</n-tag>
@@ -34,46 +50,7 @@
       <div class="preview">
         <div class="preview-title">Preview</div>
         <div>Below will give you a look of how the grid base look like.</div>
-        <div class="preview-grid" v-if="!isParticipantIdIncluded">
-          <div class="x_legend">
-            {{ group.x_variable.variable_name }}
-          </div>
-          <div class="x-axis">
-            <span
-              v-for="x in mainStore
-                .getAnalysisGroupById(group.id)
-                .x_variable.variable_values.sort((x, y) => x - y)"
-              :key="x"
-            >
-              {{ x }}
-            </span>
-          </div>
-
-          <div
-            class="preview-content"
-            :style="{
-              gridTemplateColumns: `repeat(${cellCountX}, 50px)`,
-              gridTemplateRows: `repeat(${cellCountY}, 50px)`,
-            }"
-          >
-            <!-- eslint-disable-next-line vue/require-v-for-key,vue/no-unused-vars -->
-            <div v-for="n in cellCount" class="preview-cell"></div>
-          </div>
-
-          <div class="y_legend">
-            {{ group.y_variable.variable_name }}
-          </div>
-          <div class="y-axis">
-            <span
-              v-for="y in mainStore
-                .getAnalysisGroupById(group.id)
-                .y_variable.variable_values.sort((x, y) => y - x)"
-              :key="y"
-            >
-              {{ y }}
-            </span>
-          </div>
-        </div>
+        <div class="preview-grid" v-if="!isParticipantIdIncluded"></div>
 
         <div class="preview-grid-error" v-else>
           Participant ID cannot be included
@@ -84,10 +61,10 @@
 </template>
 
 <script setup lang="ts">
-import { NCard, NSelect, NSpace, NTag } from 'naive-ui';
-import { PropType, computed } from 'vue';
-import { useMainStore } from '../../store/mainStore';
-import { AnalysisGroup } from '../../types/analysisGroups';
+import { compact } from 'lodash-es';
+import { PropType, Ref, computed, ref } from 'vue';
+import { useMainStore } from '@/store/mainStore';
+import { AnalysisGroup } from '@/types/AnalysisGroups';
 
 const mainStore = useMainStore();
 const emit = defineEmits(['close']);
@@ -113,19 +90,50 @@ const variableOptions = computed(() => {
   });
 });
 
-function handleAxisVariableChange(target: string, axis: 'x' | 'y') {
+const xAxisVariableName: Ref<string> = ref(
+  mainStore.getAnalysisGroupById(props.group.id)?.x_variable.variable_name ?? ''
+);
+
+const xAxisVariableType: Ref<'categorical' | 'continuous'> = ref(
+  mainStore.getAnalysisGroupById(props.group.id)?.x_variable.variable_type ??
+    'categorical'
+);
+
+const variableTypeOptions = [
+  {
+    value: 'categorical',
+    label: 'categorical',
+  },
+  {
+    value: 'continuous',
+    label: 'continuous',
+  },
+];
+
+function handleAxisVariableChange(
+  target: string,
+  axis: 'x' | 'y',
+  variableType: 'categorical' | 'continuous' = 'categorical'
+) {
   const allValues = mainStore.getHeadingContent(target);
   const uniqueValue = [...new Set(allValues)] as string[];
   mainStore.updateVariableSettingById(
     props.group.id,
     axis,
+    variableType,
     target,
-    uniqueValue
+    compact(uniqueValue)
   );
 }
 
-function handleXAxisVariableChange(target: string) {
+function handleXAxisVariableNameChange(target: string) {
+  xAxisVariableName.value = target;
   handleAxisVariableChange(target, 'x');
+}
+
+function handleXAxisVariableTypeChange(target: 'categorical' | 'continuous') {
+  xAxisVariableType.value = target;
+  mainStore.updateVariableTypeById(props.group.id, 'x', target);
 }
 
 function handleYAxisVariableChange(target: string) {

@@ -29,9 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import { NCheckbox } from 'naive-ui';
 import { computed } from 'vue';
-import { useMainStore } from '../../store/mainStore';
+import { useMainStore } from '@/store/mainStore';
 
 const props = defineProps({
   filterEnabled: {

@@ -12,9 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { NSelect, NSpace, NTag } from 'naive-ui';
 import { computed } from 'vue';
-import { useMainStore } from '../../store/mainStore';
+import { useMainStore } from '@/store/mainStore';
 
 const mainStore = useMainStore();
 const selectedEncoding = computed<string>(() => mainStore.getEncoding);

@@ -13,8 +13,8 @@
 <script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid';
 import { computed } from 'vue';
-import { useMainStore } from '../../store/mainStore';
-import { AnalysisGroup } from '../../types/analysisGroups';
+import { useMainStore } from '@/store/mainStore';
+import { AnalysisGroup } from '@/types/AnalysisGroups';
 import VariableGroupRow from './VariableGroupRow.vue';
 
 const mainStore = useMainStore();

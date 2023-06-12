@@ -1,6 +1,6 @@
 import { keys } from 'lodash-es';
 import { defineStore } from 'pinia';
-import { AnalysisGroup } from '../types/analysisGroups';
+import { AnalysisGroup } from '../types/AnalysisGroups';
 import { CsvContent } from '../types/store';
 
 export const useMainStore = defineStore({
@@ -91,6 +91,7 @@ export const useMainStore = defineStore({
     updateVariableSettingById(
       groupId: string,
       axis: 'x' | 'y',
+      variableType: 'categorical' | 'continuous' = 'categorical',
       variableName: string,
       variableValues: string[]
     ) {
@@ -103,6 +104,20 @@ export const useMainStore = defineStore({
           variable_name: variableName,
           variable_values: variableValues,
         };
+        this.analysisSettings.analysisGroups = analysisGroups;
+      }
+    },
+    updateVariableTypeById(
+      groupId: string,
+      axis: 'x' | 'y',
+      variableType: 'categorical' | 'continuous'
+    ) {
+      const analysisGroups = this.analysisSettings.analysisGroups;
+      const index = analysisGroups.findIndex(
+        analysisGroup => analysisGroup.id === groupId
+      );
+      if (index !== -1) {
+        analysisGroups[index][`${axis}_variable`].variable_type = variableType;
         this.analysisSettings.analysisGroups = analysisGroups;
       }
     },

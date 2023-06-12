@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
   src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
   font-family: 'JetBrains Mono';
