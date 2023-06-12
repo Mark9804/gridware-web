@@ -23,7 +23,7 @@
               <n-tag type="primary" :bordered="false">variable type</n-tag>
               <n-select
                 :options="variableTypeOptions"
-                v-model:value="xAxisVariableType"
+                :value="xAxisVariableType"
                 @update:value="handleXAxisVariableTypeChange"
                 size="small"
               />

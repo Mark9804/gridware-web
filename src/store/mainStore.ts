@@ -1,7 +1,7 @@
 import { keys } from 'lodash-es';
 import { defineStore } from 'pinia';
-import { AnalysisGroup } from '../types/AnalysisGroups';
-import { CsvContent } from '../types/store';
+import { AnalysisGroup, VariableValue } from '@/types/AnalysisGroups';
+import { CsvContent } from '@/types/store';
 
 export const useMainStore = defineStore({
   id: 'gridware',
@@ -93,7 +93,7 @@ export const useMainStore = defineStore({
       axis: 'x' | 'y',
       variableType: 'categorical' | 'continuous' = 'categorical',
       variableName: string,
-      variableValues: string[]
+      variableValues: VariableValue[]
     ) {
       const analysisGroups = this.analysisSettings.analysisGroups;
       const index = analysisGroups.findIndex(

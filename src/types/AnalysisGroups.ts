@@ -7,8 +7,13 @@ export interface AnalysisGroup {
   y_variable: VariableGroup;
 }
 
+export interface VariableValue {
+  value: string | number;
+  duration: number;
+}
+
 export interface VariableGroup {
   variable_name: string;
   variable_type?: 'categorical' | 'continuous';
-  variable_values?: string[];
+  variable_values?: VariableValue[];
 }

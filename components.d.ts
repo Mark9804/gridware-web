@@ -7,24 +7,24 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AnalyzeHome: typeof import('./src/components/analyze/AnalyzeHome.vue')['default'];
-    BuildVariableGroups: typeof import('./src/components/analyze/BuildVariableGroups.vue')['default'];
-    ConvertFromGridwareFormat: typeof import('./src/components/convert/ConvertFromGridwareFormat.vue')['default'];
-    ConvertToGridwareFormat: typeof import('./src/components/convert/ConvertToGridwareFormat.vue')['default'];
-    EncodingSelector: typeof import('./src/components/widgets/EncodingSelector.vue')['default'];
-    FilterVariables: typeof import('./src/components/analyze/FilterVariables.vue')['default'];
-    GridWareHome: typeof import('./src/components/GridWareHome.vue')['default'];
-    NCard: typeof import('naive-ui')['NCard'];
-    NCheckbox: typeof import('naive-ui')['NCheckbox'];
-    NInput: typeof import('naive-ui')['NInput'];
-    NSelect: typeof import('naive-ui')['NSelect'];
-    NSpace: typeof import('naive-ui')['NSpace'];
-    NTag: typeof import('naive-ui')['NTag'];
-    RouterLink: typeof import('vue-router')['RouterLink'];
-    RouterView: typeof import('vue-router')['RouterView'];
-    TableViewer: typeof import('./src/components/widgets/TableViewer.vue')['default'];
-    VariableGroupBuilder: typeof import('./src/components/widgets/VariableGroupBuilder.vue')['default'];
-    VariableGroupRow: typeof import('./src/components/widgets/VariableGroupRow.vue')['default'];
-    VariableSettingPanel: typeof import('./src/components/widgets/VariableSettingPanel.vue')['default'];
+    AnalyzeHome: typeof import('./src/components/analyze/AnalyzeHome.vue')['default']
+    BuildVariableGroups: typeof import('./src/components/analyze/BuildVariableGroups.vue')['default']
+    ConvertFromGridwareFormat: typeof import('./src/components/convert/ConvertFromGridwareFormat.vue')['default']
+    ConvertToGridwareFormat: typeof import('./src/components/convert/ConvertToGridwareFormat.vue')['default']
+    EncodingSelector: typeof import('./src/components/widgets/EncodingSelector.vue')['default']
+    FilterVariables: typeof import('./src/components/analyze/FilterVariables.vue')['default']
+    GridWareHome: typeof import('./src/components/GridWareHome.vue')['default']
+    NCard: typeof import('naive-ui')['NCard']
+    NCheckbox: typeof import('naive-ui')['NCheckbox']
+    NInput: typeof import('naive-ui')['NInput']
+    NSelect: typeof import('naive-ui')['NSelect']
+    NSpace: typeof import('naive-ui')['NSpace']
+    NTag: typeof import('naive-ui')['NTag']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
+    TableViewer: typeof import('./src/components/widgets/TableViewer.vue')['default']
+    VariableGroupBuilder: typeof import('./src/components/widgets/VariableGroupBuilder.vue')['default']
+    VariableGroupRow: typeof import('./src/components/widgets/VariableGroupRow.vue')['default']
+    VariableSettingPanel: typeof import('./src/components/widgets/VariableSettingPanel.vue')['default']
   }
 }
