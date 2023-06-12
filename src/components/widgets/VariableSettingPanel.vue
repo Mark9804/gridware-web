@@ -140,22 +140,6 @@ function handleYAxisVariableChange(target: string) {
   handleAxisVariableChange(target, 'y');
 }
 
-const cellCountX = computed(() => {
-  return (
-    mainStore.getAnalysisGroupById(props.group.id)?.x_variable.variable_values
-      ?.length ?? 0
-  );
-});
-
-const cellCountY = computed(() => {
-  return (
-    mainStore.getAnalysisGroupById(props.group.id)?.y_variable.variable_values
-      ?.length ?? 0
-  );
-});
-
-const cellCount = computed(() => cellCountX.value * cellCountY.value);
-
 const isParticipantIdIncluded = computed(() => {
   const identifier = mainStore.getParticipantIdentifier;
   return (

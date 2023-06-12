@@ -102,6 +102,7 @@ export const useMainStore = defineStore({
       if (index !== -1) {
         analysisGroups[index][`${axis}_variable`] = {
           variable_name: variableName,
+          variable_type: variableType,
           variable_values: variableValues,
         };
         this.analysisSettings.analysisGroups = analysisGroups;
