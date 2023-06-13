@@ -7,6 +7,12 @@ export interface AnalysisGroup {
   y_variable: VariableGroup;
 }
 
+export interface AntvGraphPoint {
+  id?: string;
+  x: number;
+  y: number;
+}
+
 export interface VariableValue {
   value: string | number;
   duration: number;

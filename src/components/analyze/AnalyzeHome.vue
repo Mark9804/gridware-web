@@ -26,8 +26,8 @@
 
 <script setup lang="ts">
 import { computed, watch } from 'vue';
-import { useMainStore } from '../../store/mainStore';
-import { convertCsv } from '../../utils/convertCsv';
+import { useMainStore } from '@/store/mainStore';
+import { convertCsv } from '@/utils/convertCsv';
 import BuildVariableGroups from './BuildVariableGroups.vue';
 import FilterVariables from './FilterVariables.vue';
 

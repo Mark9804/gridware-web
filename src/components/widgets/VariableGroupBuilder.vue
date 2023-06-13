@@ -1,7 +1,7 @@
 <template>
   <div class="variable-group-container">
     <h3 class="main-title">Add Variable Group</h3>
-    <h3 class="participant-title">Add Participants</h3>
+    <h3 class="participant-title">Actions</h3>
     <variable-group-row
       v-for="group in analysisGroups"
       :key="group.id"
@@ -31,8 +31,26 @@ function initGroup() {
   const group: AnalysisGroup = {
     id: uuid,
     groupName: '',
-    x_variable: { variable_name: '' },
-    y_variable: { variable_name: '' },
+    x_variable: {
+      variable_name: '',
+      variable_type: 'categorical',
+      variable_values: [
+        {
+          value: '',
+          duration: 1,
+        },
+      ],
+    },
+    y_variable: {
+      variable_name: '',
+      variable_type: 'categorical',
+      variable_values: [
+        {
+          value: '',
+          duration: 1,
+        },
+      ],
+    },
   };
   mainStore.updateAnalysisGroup(group);
 }

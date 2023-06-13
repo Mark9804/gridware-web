@@ -8,49 +8,137 @@
       :bordered="false"
     >
       <n-space vertical align="start">
-        <n-card title="X-axis variable" size="small">
-          <n-space vertical align="start">
-            <n-space>
-              <n-tag type="primary" :bordered="false">variable name</n-tag>
-              <n-input
-                v-model:value="xAxisVariableName"
-                placeholder="Enter variable name"
-                @update:value="handleXAxisVariableNameChange"
-                size="small"
-              />
-            </n-space>
-            <n-space>
-              <n-tag type="primary" :bordered="false">variable type</n-tag>
-              <n-select
-                :options="variableTypeOptions"
-                :value="xAxisVariableType"
-                @update:value="handleXAxisVariableTypeChange"
-                size="small"
-              />
-            </n-space>
-            <n-space>
-              <n-tag type="primary" :bordered="false">variables</n-tag>
-            </n-space>
-            <n-space> </n-space>
-          </n-space>
-        </n-card>
+        <details>
+          <summary>X-axis variable</summary>
 
-        <n-space align="center">
-          <n-tag type="info" :bordered="false">Y-axis variable</n-tag>
-          <n-select
-            class="variable-select"
-            :options="variableOptions"
-            @update:value="handleYAxisVariableChange"
-            :value="group.y_variable.variable_name"
-            filterable
-          />
+          <n-card title="X-axis variable" size="small">
+            <n-space vertical align="start">
+              <n-space>
+                <n-tag type="primary" :bordered="false">variable name</n-tag>
+                <n-input
+                  v-model:value="xAxisVariableName"
+                  placeholder="Enter variable name"
+                  @update:value="handleXAxisVariableNameChange"
+                  size="small"
+                />
+              </n-space>
+              <n-space>
+                <n-tag type="primary" :bordered="false">variable type</n-tag>
+                <n-select
+                  :options="variableTypeOptions"
+                  :value="xAxisVariableType"
+                  @update:value="handleXAxisVariableTypeChange"
+                  size="small"
+                />
+              </n-space>
+              <n-space vertical align="start">
+                <n-tag type="primary" :bordered="false">variables</n-tag>
+                <n-space v-for="(xAxisVariable, index) in xAxisVariableList">
+                  <n-tag type="info" :bordered="false">
+                    {{ index + 1 }}
+                  </n-tag>
+                  <n-select
+                    :options="variableOptions"
+                    :value="xAxisVariable.value"
+                    @update:value="
+                      handleVariableListChange(
+                        $event,
+                        index,
+                        'x',
+                        xAxisVariableList
+                      )
+                    "
+                    size="small"
+                    filterable
+                  />
+                  <n-button
+                    size="small"
+                    @click="handleAddOneLine('x', index, xAxisVariableList)"
+                  >
+                    add
+                  </n-button>
+                  <n-button
+                    size="small"
+                    @click="handleRemoveOneLine('x', index, xAxisVariableList)"
+                  >
+                    remove
+                  </n-button>
+                </n-space>
+              </n-space>
+            </n-space>
+          </n-card>
+        </details>
+
+        <n-space vertical align="start">
+          <details>
+            <summary>Y-axis variable</summary>
+
+            <n-card title="Y-axis variable" size="small">
+              <n-space vertical align="start">
+                <n-space>
+                  <n-tag type="primary" :bordered="false">variable name</n-tag>
+                  <n-input
+                    v-model:value="yAxisVariableName"
+                    placeholder="Enter variable name"
+                    @update:value="handleYAxisVariableNameChange"
+                    size="small"
+                  />
+                </n-space>
+                <n-space>
+                  <n-tag type="primary" :bordered="false">variable type</n-tag>
+                  <n-select
+                    :options="variableTypeOptions"
+                    :value="xAxisVariableType"
+                    @update:value="handleXAxisVariableTypeChange"
+                    size="small"
+                  />
+                </n-space>
+                <n-space vertical align="start">
+                  <n-tag type="primary" :bordered="false">variables</n-tag>
+                  <n-space v-for="(yAxisVariable, index) in yAxisVariableList">
+                    <n-tag type="info" :bordered="false">
+                      {{ index + 1 }}
+                    </n-tag>
+                    <n-select
+                      :options="variableOptions"
+                      :value="yAxisVariable.value"
+                      @update:value="
+                        handleVariableListChange(
+                          $event,
+                          index,
+                          'y',
+                          yAxisVariableList
+                        )
+                      "
+                      size="small"
+                      filterable
+                    />
+                    <n-button
+                      size="small"
+                      @click="handleAddOneLine('y', index, yAxisVariableList)"
+                    >
+                      add
+                    </n-button>
+                    <n-button
+                      size="small"
+                      @click="
+                        handleRemoveOneLine('y', index, yAxisVariableList)
+                      "
+                    >
+                      remove
+                    </n-button>
+                  </n-space>
+                </n-space>
+              </n-space>
+            </n-card>
+          </details>
         </n-space>
       </n-space>
 
       <div class="preview">
-        <div class="preview-title">Preview</div>
-        <div>Below will give you a look of how the grid base look like.</div>
-        <div class="preview-grid" v-if="!isParticipantIdIncluded"></div>
+        <div class="preview-grid" v-if="!isParticipantIdIncluded">
+          <grid-component :group="props.group as AnalysisGroup" />
+        </div>
 
         <div class="preview-grid-error" v-else>
           Participant ID cannot be included
@@ -65,6 +153,7 @@ import { compact } from 'lodash-es';
 import { PropType, Ref, computed, ref } from 'vue';
 import { useMainStore } from '@/store/mainStore';
 import { AnalysisGroup } from '@/types/AnalysisGroups';
+import GridComponent from '@components/widgets/GridComponent.vue';
 
 const mainStore = useMainStore();
 const emit = defineEmits(['close']);
@@ -91,13 +180,20 @@ const variableOptions = computed(() => {
 });
 
 const xAxisVariableName: Ref<string> = ref(
-  mainStore.getAnalysisGroupById(props.group.id)?.x_variable.variable_name ?? ''
+  props.group?.x_variable.variable_name ?? ''
 );
 
 const xAxisVariableType: Ref<'categorical' | 'continuous'> = ref(
-  mainStore.getAnalysisGroupById(props.group.id)?.x_variable.variable_type ??
-    'categorical'
+  props.group?.x_variable.variable_type ?? 'categorical'
 );
+
+const yAxisVariableName: Ref<string> = ref(
+  props.group?.y_variable.variable_name ?? ''
+);
+
+// const yAxisVariableType: Ref<'categorical' | 'continuous'> = ref(
+//   props.group?.y_variable.variable_type ?? 'categorical'
+// );
 
 const variableTypeOptions = [
   {
@@ -109,26 +205,35 @@ const variableTypeOptions = [
     label: 'continuous',
   },
 ];
+//
+// function handleAxisVariableChange(
+//   target: string,
+//   axis: 'x' | 'y',
+//   variableType: 'categorical' | 'continuous' = 'categorical'
+// ) {
+//   const allValues = mainStore.getHeadingContent(target);
+//   const uniqueValue = [...new Set(allValues)] as string[];
+//   mainStore.updateVariableSettingById(
+//     props.group.id,
+//     axis,
+//     variableType,
+//     target,
+//     compact(uniqueValue)
+//   );
+// }
 
-function handleAxisVariableChange(
-  target: string,
-  axis: 'x' | 'y',
-  variableType: 'categorical' | 'continuous' = 'categorical'
-) {
-  const allValues = mainStore.getHeadingContent(target);
-  const uniqueValue = [...new Set(allValues)] as string[];
-  mainStore.updateVariableSettingById(
-    props.group.id,
-    axis,
-    variableType,
-    target,
-    compact(uniqueValue)
-  );
+function handleVariableNameChange(name: string, axis: 'x' | 'y') {
+  mainStore.updaterVariableNameById(props.group.id, axis, name);
 }
 
 function handleXAxisVariableNameChange(target: string) {
   xAxisVariableName.value = target;
-  handleAxisVariableChange(target, 'x');
+  handleVariableNameChange(target, 'x');
+}
+
+function handleYAxisVariableNameChange(target: string) {
+  yAxisVariableName.value = target;
+  handleVariableNameChange(target, 'y');
 }
 
 function handleXAxisVariableTypeChange(target: 'categorical' | 'continuous') {
@@ -136,8 +241,37 @@ function handleXAxisVariableTypeChange(target: 'categorical' | 'continuous') {
   mainStore.updateVariableTypeById(props.group.id, 'x', target);
 }
 
-function handleYAxisVariableChange(target: string) {
-  handleAxisVariableChange(target, 'y');
+// function handleYAxisVariableTypeChange(target: 'categorical' | 'continuous') {
+//   yAxisVariableType.value = target;
+//   mainStore.updateVariableTypeById(props.group.id, 'y', target);
+// }
+
+const xAxisVariableList = computed(() => {
+  const variableList = props.group?.x_variable.variable_values ?? [
+    { value: '', duration: 1 },
+  ];
+  return 0 === compact(variableList).length
+    ? [{ value: '', duration: 1 }]
+    : variableList;
+});
+
+const yAxisVariableList = computed(() => {
+  const variableList = props.group?.y_variable.variable_values ?? [
+    { value: '', duration: 1 },
+  ];
+  return 0 === compact(variableList).length
+    ? [{ value: '', duration: 1 }]
+    : variableList;
+});
+
+function handleVariableListChange(
+  target,
+  index,
+  axis: 'x' | 'y',
+  axisVariableList
+) {
+  axisVariableList[index]['value'] = target;
+  mainStore.updateVariableListById(props.group.id, axis, axisVariableList);
 }
 
 const isParticipantIdIncluded = computed(() => {
@@ -149,77 +283,42 @@ const isParticipantIdIncluded = computed(() => {
       identifier
   );
 });
+
+function handleAddOneLine(axis: 'x' | 'y', index, axisVariableList) {
+  axisVariableList.splice(index + 1, 0, { value: '', duration: 1 });
+  mainStore.updateVariableListById(props.group.id, axis, axisVariableList);
+}
+
+function handleRemoveOneLine(axis: 'x' | 'y', index, axisVariableList) {
+  console.log(index);
+  mainStore.updateVariableListById(
+    props.group.id,
+    axis,
+    axisVariableList.filter((_, i) => i !== index)
+  );
+}
 </script>
 
 <style scoped lang="scss">
 .settings-panel {
   background-color: var(--color-navbar-background);
 
-  .preview {
-    grid-area: preview;
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 1rem;
-    width: 100%;
-    align-items: center;
-
-    .preview-title {
-      width: 100%;
-      text-align: start;
-      font-size: 1.25rem;
-      font-weight: bold;
+  details[open] {
+    summary {
+      cursor: pointer;
+      display: flex;
+      &::before {
+        content: '▼';
+      }
     }
+  }
 
-    .preview-grid-error {
-      color: red;
-      font-weight: bold;
-    }
-
-    .preview-grid {
-      display: grid;
-      grid-template-areas:
-        'y-legend y-axis grid-content'
-        'y-legend . x-axis'
-        '. x-legend x-legend';
-      grid-template-rows: max-content min-content min-content;
-      grid-template-columns: min-content min-content max-content;
-
-      .x_legend {
-        grid-area: x-legend;
-        margin-right: 1rem;
-      }
-
-      .x-axis {
-        display: grid;
-        grid-area: x-axis;
-        grid-auto-flow: column;
-        place-items: center;
-      }
-
-      .preview-content {
-        grid-area: grid-content;
-        border: solid 2px #000;
-        display: grid;
-
-        .preview-cell {
-          border: solid 0.5px #ccc;
-        }
-      }
-
-      .y_legend {
-        grid-area: y-legend;
-        margin-bottom: 1rem;
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-      }
-
-      .y-axis {
-        display: grid;
-        grid-area: y-axis;
-        grid-auto-flow: column;
-        place-items: center;
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
+  details {
+    summary {
+      cursor: pointer;
+      display: flex;
+      &::before {
+        content: '▶';
       }
     }
   }

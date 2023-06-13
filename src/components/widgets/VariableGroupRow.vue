@@ -26,6 +26,20 @@
         @click="showSettings = true"
       />
     </div>
+    <div class="actions">
+      <n-button
+        type="info"
+        secondary
+        :bordered="false"
+        size="small"
+        @click="handleAddOneLine"
+      >
+        Add
+      </n-button>
+      <n-button type="error" secondary :bordered="false" size="small">
+        Remove
+      </n-button>
+    </div>
     <variable-setting-panel
       :group="group"
       v-if="showSettings"
@@ -35,9 +49,17 @@
 </template>
 
 <script setup lang="ts">
+import { v4 as uuidv4 } from 'uuid';
 import { PropType, ref } from 'vue';
+import { useMainStore } from '@/store/mainStore';
 import { AnalysisGroup } from '@/types/AnalysisGroups';
 import VariableSettingPanel from './VariableSettingPanel.vue';
+
+const mainStore = useMainStore();
+
+function getUniqueKey() {
+  return uuidv4();
+}
 
 defineProps({
   group: {
@@ -47,6 +69,35 @@ defineProps({
 });
 
 const showSettings = ref(false);
+
+function handleAddOneLine() {
+  const uuid = getUniqueKey();
+  const group: AnalysisGroup = {
+    id: uuid,
+    groupName: '',
+    x_variable: {
+      variable_name: '',
+      variable_type: 'categorical',
+      variable_values: [
+        {
+          value: '',
+          duration: 1,
+        },
+      ],
+    },
+    y_variable: {
+      variable_name: '',
+      variable_type: 'categorical',
+      variable_values: [
+        {
+          value: '',
+          duration: 1,
+        },
+      ],
+    },
+  };
+  mainStore.updateAnalysisGroup(group);
+}
 </script>
 
 <style scoped lang="scss">

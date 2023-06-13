@@ -1,0 +1,347 @@
+<script setup lang="ts">
+import { uniq } from 'lodash-es';
+import { PropType, computed, onMounted, ref, watch } from 'vue';
+import { useMainStore } from '@/store/mainStore';
+import { AnalysisGroup, AntvGraphPoint } from '@/types/AnalysisGroups';
+import { getCellHeterogeneity, getOccupiedCount } from '@/utils/heterogeneity';
+import { Graph, Grid } from '@antv/g6';
+
+const mainStore = useMainStore();
+
+const props = defineProps({
+  group: {
+    type: Object as PropType<AnalysisGroup>,
+    required: true,
+  },
+});
+
+const graphElement = ref();
+
+const participantIdentifier = computed(
+  () => mainStore.getParticipantIdentifier
+);
+
+const allParticipants = computed(() => {
+  return mainStore
+    .getHeadingContent(participantIdentifier.value)
+    .map(participant => {
+      return {
+        value: participant,
+        label: participant,
+      };
+    });
+});
+
+const targetData = ref();
+
+function updateTargetDataByIdentifier(identifier: string | number) {
+  targetData.value = mainStore.getTargetDataByIdentifier(
+    identifier,
+    mainStore.getSelectedVariables
+  );
+  return targetData.value;
+}
+
+const selectedParticipant = ref(
+  allParticipants.value[0].value as string | number
+);
+
+updateTargetDataByIdentifier(selectedParticipant.value);
+
+const pointSet = ref([] as AntvGraphPoint[]);
+const rawPointSet = ref([] as { x: number; y: number }[]);
+
+function getPhaseCount(group: AnalysisGroup) {
+  const xVariableCount = group.x_variable.variable_values.length;
+  const yVariableCount = group.y_variable.variable_values.length;
+
+  return Math.min(xVariableCount, yVariableCount);
+}
+
+const graphProperties = computed(() => {
+  const allXVariableNames = props.group?.x_variable.variable_values?.map(
+    variable => variable.value
+  );
+  const allYVariableNames = props.group?.y_variable.variable_values?.map(
+    variable => variable.value
+  );
+  const allXValues = [];
+  const allYValues = [];
+
+  for (const xVariableName of allXVariableNames) {
+    allXValues.push([...mainStore.getHeadingContent(xVariableName + '')]);
+  }
+
+  for (const yVariableName of allYVariableNames) {
+    allYValues.push([...mainStore.getHeadingContent(yVariableName + '')]);
+  }
+
+  const uniqueXValues = uniq(allXValues.flat());
+  const uniqueYValues = uniq(allYValues.flat());
+
+  return {
+    xCellCount: uniqueXValues.length,
+    yCellCount: uniqueYValues.length,
+    xCellLabels: uniqueXValues.sort(),
+    yCellLabels: uniqueYValues.sort(),
+  };
+});
+
+function updateRawPointSet() {
+  rawPointSet.value = [];
+  for (let i = 0; i < getPhaseCount(props.group as AnalysisGroup); i++) {
+    const point = {
+      id: `node${i}`,
+      x: targetData.value[props.group?.x_variable.variable_values[i].value],
+      y:
+        graphProperties.value.yCellCount -
+        targetData.value[props.group?.y_variable.variable_values[i].value] -
+        1,
+    };
+    rawPointSet.value.push(point);
+  }
+}
+
+updateRawPointSet();
+
+function updatePointSet() {
+  pointSet.value = [];
+  pointSet.value = rawPointSet.value.map(point => {
+    return {
+      id: point.id,
+      x: point.x * 40 + Math.floor(40 * Math.random() * 100) / 100,
+      y: point.y * 40 + Math.floor(40 * Math.random() * 100) / 100,
+    };
+  });
+}
+
+updatePointSet();
+
+const occupiedCells = ref([] as { x: number; y: number; count: number }[]);
+
+function handleParticipantChange(selectedParticipant) {
+  occupiedCells.value = [];
+  updateTargetDataByIdentifier(selectedParticipant);
+  updateRawPointSet();
+  updatePointSet();
+}
+
+const renderData = computed(() => {
+  const nodes = [...pointSet.value];
+  const edges = [];
+  for (let i = 0; i < nodes.length - 1; i++) {
+    edges.push({
+      source: nodes[i].id,
+      target: nodes[i + 1].id,
+    });
+  }
+  return {
+    nodes,
+    edges,
+  };
+});
+
+const grid = new Grid({
+  grid: 10,
+});
+onMounted(() => {
+  const graph = new Graph({
+    container: graphElement.value,
+    width: graphProperties.value.xCellCount * 40,
+    height: graphProperties.value.yCellCount * 40,
+    modes: {
+      default: [],
+    },
+    defaultNode: {
+      size: 8,
+      style: {
+        fill: '#C6E5FF',
+        stroke: '#5B8FF9',
+      },
+    },
+    plugins: [grid],
+    defaultEdge: {
+      style: {
+        endArrow: true,
+        stroke: '#F6BD16',
+      },
+    },
+  });
+  graph.data(renderData.value);
+  graph.render();
+
+  watch(
+    () => renderData.value,
+    () => {
+      graph.changeData(renderData.value);
+    }
+  );
+});
+
+function handleCountOccupied(x: number, y: number) {
+  const occupiedCount = getOccupiedCount(
+    x,
+    y,
+    graphProperties.value.xCellCount,
+    graphProperties.value.yCellCount,
+    renderData.value.nodes
+  );
+  if (occupiedCount > 0) {
+    if (occupiedCells.value.filter(i => i.x === x && i.y === y).length === 0) {
+      occupiedCells.value.push({ x, y, count: occupiedCount });
+    }
+    return occupiedCount;
+  } else {
+    return 0;
+  }
+}
+</script>
+
+<template>
+  <n-space vertical align="start">
+    <n-space>
+      <n-tag type="info">Participant</n-tag>
+      <n-select
+        :options="allParticipants"
+        v-model:value="selectedParticipant"
+        @update:value="handleParticipantChange(selectedParticipant)"
+        size="small"
+        filterable
+      />
+    </n-space>
+
+    <n-space>
+      <div class="grid-container">
+        <div class="legend__y-legend flex">
+          <div class="legend__y-legend__title">
+            {{ props.group.y_variable.variable_name }}
+          </div>
+          <div class="legend__y-legend__label-container flex flex-col-reverse">
+            <div
+              class="legend__y-legend__label-container__label flex center"
+              v-for="yLabel in graphProperties.yCellLabels"
+            >
+              {{ yLabel }}
+            </div>
+          </div>
+        </div>
+        <div id="mountNode" ref="graphElement"></div>
+        <div class="legend__x-legend flex flex-col">
+          <div class="legend__x-legend__label-container flex">
+            <div
+              class="legend__x-legend__label-container__label flex center"
+              v-for="xLabel in graphProperties.xCellLabels"
+            >
+              {{ xLabel }}
+            </div>
+          </div>
+          <div class="legend__x-legend__title">
+            {{ props.group.x_variable.variable_name }}
+          </div>
+        </div>
+      </div>
+      <div class="heterogeneity__container">
+        <table
+          class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+        >
+          <tbody>
+            <tr v-for="yCount in graphProperties.yCellCount">
+              <td
+                class="border dark:bg-gray-800 dark:border-gray-700 table-cell"
+                v-for="xCount in graphProperties.xCellCount"
+              >
+                {{
+                  handleCountOccupied(
+                    xCount - 1,
+                    graphProperties.yCellCount - yCount
+                  ) !== 0
+                    ? getCellHeterogeneity(
+                        handleCountOccupied(
+                          xCount - 1,
+                          graphProperties.yCellCount - yCount
+                        ),
+                        occupiedCells,
+                        xCount - 1,
+                        graphProperties.yCellCount - yCount
+                      ).toFixed(2)
+                    : ''
+                }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        Heterogeneity
+      </div>
+    </n-space>
+  </n-space>
+</template>
+
+<style scoped lang="scss">
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'y-legend graph'
+    '. x-legend'
+    'title title';
+  place-items: stretch;
+
+  #mountNode {
+    grid-area: graph;
+    border: 1px solid #333;
+  }
+
+  .legend {
+    &__y-legend {
+      grid-area: y-legend;
+      padding-right: 8px;
+
+      &__title {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        transform: rotate(180deg);
+      }
+
+      &__label-container {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-around;
+        height: 100%;
+        padding-left: 4px;
+
+        &__label {
+        }
+      }
+    }
+
+    &__x-legend {
+      grid-area: x-legend;
+      padding-top: 4px;
+
+      &__title {
+        padding-bottom: 4px;
+        margin-top: -8px;
+      }
+
+      &__label-container {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+
+        &__label {
+          padding-bottom: 8px;
+        }
+      }
+    }
+  }
+}
+
+table .table-cell {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+}
+
+:deep(.g6-grid-container) {
+  z-index: 0 !important;
+}
+</style>

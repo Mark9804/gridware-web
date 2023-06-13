@@ -41,6 +41,24 @@ export const useMainStore = defineStore({
     },
     getMergeSameSettings: state =>
       state.analysisSettings.mergeSameVariableGroups,
+    getTargetDataByIdentifier:
+      state =>
+      (identifier: string | number, filter: string[] = []) => {
+        const participantIdentifier =
+          state.customSettings.participantIdentifier;
+        const targetAllData =
+          state.csvData.content.find(
+            record => record[participantIdentifier] === identifier
+          ) || {};
+
+        return filter.length !== 0
+          ? Object.keys(targetAllData)
+              .filter(key => filter.includes(key))
+              .reduce((cur, key) => {
+                return Object.assign(cur, { [key]: targetAllData[key] });
+              }, {})
+          : targetAllData;
+      },
   },
   actions: {
     submitFile(file: File) {
@@ -108,6 +126,20 @@ export const useMainStore = defineStore({
         this.analysisSettings.analysisGroups = analysisGroups;
       }
     },
+    updaterVariableNameById(
+      groupId: string,
+      axis: 'x' | 'y',
+      variableName: string
+    ) {
+      const analysisGroups = this.analysisSettings.analysisGroups;
+      const index = analysisGroups.findIndex(
+        analysisGroup => analysisGroup.id === groupId
+      );
+      if (index !== -1) {
+        analysisGroups[index][`${axis}_variable`].variable_name = variableName;
+        this.analysisSettings.analysisGroups = analysisGroups;
+      }
+    },
     updateVariableTypeById(
       groupId: string,
       axis: 'x' | 'y',
@@ -119,6 +151,21 @@ export const useMainStore = defineStore({
       );
       if (index !== -1) {
         analysisGroups[index][`${axis}_variable`].variable_type = variableType;
+        this.analysisSettings.analysisGroups = analysisGroups;
+      }
+    },
+    updateVariableListById(
+      groupId: string,
+      axis: 'x' | 'y',
+      variableValues: VariableValue[]
+    ) {
+      const analysisGroups = this.analysisSettings.analysisGroups;
+      const index = analysisGroups.findIndex(
+        analysisGroup => analysisGroup.id === groupId
+      );
+      if (index !== -1) {
+        analysisGroups[index][`${axis}_variable`].variable_values =
+          variableValues;
         this.analysisSettings.analysisGroups = analysisGroups;
       }
     },

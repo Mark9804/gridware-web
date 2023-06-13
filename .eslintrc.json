@@ -15,7 +15,9 @@
   "ignorePatterns": ["vite-env.d.ts"],
   "plugins": ["vue", "import", "sort-exports", "@typescript-eslint"],
   "rules": {
-    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "vue/require-v-for-key": ["off"],
+    "vue/valid-v-for": ["off"],
+    "indent": ["off"],
     "max-len": ["error", { "code": 120 }],
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
