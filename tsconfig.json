@@ -3,7 +3,13 @@
     "paths": {
       "@/*": ["./src/*"],
       "@assets/*": ["./src/assets/*"],
-      "@components/*": ["./src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@analyze/*": ["./src/components/analyze/*"],
+      "@convert/*": ["./src/components/convert/*"],
+      "@widgets/*": ["./src/components/widgets/*"],
+      "@store/*": ["./src/store/*"],
+      "@types/*": ["./src/types/*"],
+      "@utils/*": ["./src/utils/*"],
     },
     "target": "ESNext",
     "useDefineForClassFields": true,

@@ -126,6 +126,7 @@ function handleAddOneLine() {
 .variable {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .setting-icon {

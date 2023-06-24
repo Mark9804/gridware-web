@@ -3,8 +3,9 @@ import { uniq } from 'lodash-es';
 import { PropType, computed, onMounted, ref, watch } from 'vue';
 import { useMainStore } from '@/store/mainStore';
 import { AnalysisGroup, AntvGraphPoint } from '@/types/AnalysisGroups';
-import { getCellHeterogeneity, getOccupiedCount } from '@/utils/heterogeneity';
 import { Graph, Grid } from '@antv/g6';
+import HeterogeneityGridPlotter from '@components/widgets/HeterogeneityGridPlotter.vue';
+import HeterogeneityLinePlotter from '@widgets/HeterogeneityLinePlotter.vue';
 
 const mainStore = useMainStore();
 
@@ -111,6 +112,7 @@ function updatePointSet() {
       id: point.id,
       x: point.x * 40 + Math.floor(40 * Math.random() * 100) / 100,
       y: point.y * 40 + Math.floor(40 * Math.random() * 100) / 100,
+      duration: 1,
     };
   });
 }
@@ -173,28 +175,11 @@ onMounted(() => {
   watch(
     () => renderData.value,
     () => {
-      graph.changeData(renderData.value);
+      graph.data(renderData.value);
+      graph.render();
     }
   );
 });
-
-function handleCountOccupied(x: number, y: number) {
-  const occupiedCount = getOccupiedCount(
-    x,
-    y,
-    graphProperties.value.xCellCount,
-    graphProperties.value.yCellCount,
-    renderData.value.nodes
-  );
-  if (occupiedCount > 0) {
-    if (occupiedCells.value.filter(i => i.x === x && i.y === y).length === 0) {
-      occupiedCells.value.push({ x, y, count: occupiedCount });
-    }
-    return occupiedCount;
-  } else {
-    return 0;
-  }
-}
 </script>
 
 <template>
@@ -240,38 +225,14 @@ function handleCountOccupied(x: number, y: number) {
           </div>
         </div>
       </div>
-      <div class="heterogeneity__container">
-        <table
-          class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
-        >
-          <tbody>
-            <tr v-for="yCount in graphProperties.yCellCount">
-              <td
-                class="border dark:bg-gray-800 dark:border-gray-700 table-cell"
-                v-for="xCount in graphProperties.xCellCount"
-              >
-                {{
-                  handleCountOccupied(
-                    xCount - 1,
-                    graphProperties.yCellCount - yCount
-                  ) !== 0
-                    ? getCellHeterogeneity(
-                        handleCountOccupied(
-                          xCount - 1,
-                          graphProperties.yCellCount - yCount
-                        ),
-                        occupiedCells,
-                        xCount - 1,
-                        graphProperties.yCellCount - yCount
-                      ).toFixed(2)
-                    : ''
-                }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        Heterogeneity
-      </div>
+      <HeterogeneityGridPlotter
+        :yCellCount="graphProperties.yCellCount"
+        :xCellCount="graphProperties.xCellCount"
+        :nodes="renderData.nodes"
+        :occupiedCells="occupiedCells"
+      />
+
+      <HeterogeneityLinePlotter />
     </n-space>
   </n-space>
 </template>
@@ -287,6 +248,8 @@ function handleCountOccupied(x: number, y: number) {
 
   #mountNode {
     grid-area: graph;
+    //width: 300px;
+    //height: 300px;
     border: 1px solid #333;
   }
 
@@ -333,12 +296,6 @@ function handleCountOccupied(x: number, y: number) {
       }
     }
   }
-}
-
-table .table-cell {
-  width: 40px;
-  height: 40px;
-  text-align: center;
 }
 
 :deep(.g6-grid-container) {

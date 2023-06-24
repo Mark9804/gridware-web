@@ -189,10 +189,6 @@ const yAxisVariableName: Ref<string> = ref(
   props.group?.y_variable.variable_name ?? ''
 );
 
-// const yAxisVariableType: Ref<'categorical' | 'continuous'> = ref(
-//   props.group?.y_variable.variable_type ?? 'categorical'
-// );
-
 const variableTypeOptions = [
   {
     value: 'categorical',
@@ -203,22 +199,6 @@ const variableTypeOptions = [
     label: 'continuous',
   },
 ];
-//
-// function handleAxisVariableChange(
-//   target: string,
-//   axis: 'x' | 'y',
-//   variableType: 'categorical' | 'continuous' = 'categorical'
-// ) {
-//   const allValues = mainStore.getHeadingContent(target);
-//   const uniqueValue = [...new Set(allValues)] as string[];
-//   mainStore.updateVariableSettingById(
-//     props.group.id,
-//     axis,
-//     variableType,
-//     target,
-//     compact(uniqueValue)
-//   );
-// }
 
 function handleVariableNameChange(name: string, axis: 'x' | 'y') {
   mainStore.updaterVariableNameById(props.group.id, axis, name);
@@ -238,11 +218,6 @@ function handleXAxisVariableTypeChange(target: 'categorical' | 'continuous') {
   xAxisVariableType.value = target;
   mainStore.updateVariableTypeById(props.group.id, 'x', target);
 }
-
-// function handleYAxisVariableTypeChange(target: 'categorical' | 'continuous') {
-//   yAxisVariableType.value = target;
-//   mainStore.updateVariableTypeById(props.group.id, 'y', target);
-// }
 
 const xAxisVariableList = computed(() => {
   const variableList = props.group?.x_variable.variable_values ?? [

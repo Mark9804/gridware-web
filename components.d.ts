@@ -15,6 +15,8 @@ declare module 'vue' {
     FilterVariables: typeof import('./src/components/analyze/FilterVariables.vue')['default']
     GridComponent: typeof import('./src/components/widgets/GridComponent.vue')['default']
     GridWareHome: typeof import('./src/components/GridWareHome.vue')['default']
+    HeterogeneityGridPlotter: typeof import('./src/components/widgets/HeterogeneityGridPlotter.vue')['default']
+    HeterogeneityLinePlotter: typeof import('./src/components/widgets/HeterogeneityLinePlotter.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NCheckbox: typeof import('naive-ui')['NCheckbox']

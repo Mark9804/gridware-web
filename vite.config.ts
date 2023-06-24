@@ -18,6 +18,12 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@components': path.resolve(__dirname, 'src/components'),
+      '@analyze': path.resolve(__dirname, 'src/components/analyze'),
+      '@convert': path.resolve(__dirname, 'src/components/convert'),
+      '@widgets': path.resolve(__dirname, 'src/components/widgets'),
+      '@store': path.resolve(__dirname, 'src/store'),
+      '@types': path.resolve(__dirname, 'src/types'),
+      '@utils': path.resolve(__dirname, 'src/utils'),
     },
   },
   plugins: [

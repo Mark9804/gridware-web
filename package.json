@@ -23,6 +23,7 @@
     ]
   },
   "dependencies": {
+    "@antv/g2plot": "^2.4.31",
     "@antv/g6": "4.8.17",
     "@types/node": "20.3.0",
     "@vue/compiler-sfc": "3.x",
