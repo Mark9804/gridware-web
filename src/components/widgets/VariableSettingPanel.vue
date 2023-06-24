@@ -152,7 +152,7 @@
 import { compact } from 'lodash-es';
 import { PropType, Ref, computed, ref } from 'vue';
 import { useMainStore } from '@/store/mainStore';
-import { AnalysisGroup } from '@/types/AnalysisGroups';
+import { AnalysisGroup, VariableValue } from '@/types/AnalysisGroups';
 import GridComponent from '@components/widgets/GridComponent.vue';
 
 const mainStore = useMainStore();
@@ -166,9 +166,7 @@ const props = defineProps({
     required: true,
   },
 });
-const selectedVariables = computed(() => {
-  return mainStore.getSelectedVariables;
-});
+const selectedVariables = computed(() => mainStore.getSelectedVariables);
 
 const variableOptions = computed(() => {
   return selectedVariables.value.map(variable => {
@@ -265,10 +263,10 @@ const yAxisVariableList = computed(() => {
 });
 
 function handleVariableListChange(
-  target,
-  index,
+  target: string | number,
+  index: number,
   axis: 'x' | 'y',
-  axisVariableList
+  axisVariableList: VariableValue[]
 ) {
   axisVariableList[index]['value'] = target;
   mainStore.updateVariableListById(props.group.id, axis, axisVariableList);
@@ -284,17 +282,25 @@ const isParticipantIdIncluded = computed(() => {
   );
 });
 
-function handleAddOneLine(axis: 'x' | 'y', index, axisVariableList) {
+function handleAddOneLine(
+  axis: 'x' | 'y',
+  index: number,
+  axisVariableList: VariableValue[]
+) {
   axisVariableList.splice(index + 1, 0, { value: '', duration: 1 });
   mainStore.updateVariableListById(props.group.id, axis, axisVariableList);
 }
 
-function handleRemoveOneLine(axis: 'x' | 'y', index, axisVariableList) {
+function handleRemoveOneLine(
+  axis: 'x' | 'y',
+  index: number,
+  axisVariableList: VariableValue[]
+) {
   console.log(index);
   mainStore.updateVariableListById(
     props.group.id,
     axis,
-    axisVariableList.filter((_, i) => i !== index)
+    axisVariableList.filter((_: never, i: number) => i !== index)
   );
 }
 </script>
