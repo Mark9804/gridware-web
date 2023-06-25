@@ -1,27 +1,74 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { Line } from '@antv/g2plot';
+import { OccupiedCell } from '@types/AnalysisGroups';
+import { getHeterogeneityScore } from '@utils/heterogeneity';
 
-const data = [
-  { year: '1991', value: 3 },
-  { year: '1992', value: 4 },
-  { year: '1993', value: 3.5 },
-  { year: '1994', value: 5 },
-  { year: '1995', value: 4.9 },
-  { year: '1996', value: 6 },
-  { year: '1997', value: 7 },
-  { year: '1998', value: 9 },
-  { year: '1999', value: 13 },
-];
+const props = defineProps<{
+  occupiedCellsList: OccupiedCell[];
+}>();
 
-// line.render();
+// type OccupiedCell = {
+//   order: number;
+//   x: number;
+//   y: number;
+//   count: number;
+// };
+
+const cellsList = computed(() => props.occupiedCellsList);
+
+const heterogeneityScoreSet = ref<number[]>([]);
+
+const testSet = ref([
+  { count: 2 },
+  { count: 2 },
+  { count: 3 },
+  { count: 4 },
+  { count: 20 },
+  { count: 30 },
+]);
+
+watch(
+  () => props.occupiedCellsList,
+  () => {
+    heterogeneityScoreSet.value = [];
+    const pointSet = cellsList.value;
+    for (let i = 0; i < pointSet.length; i++) {
+      // delete first i elements
+      const tempCellsList = pointSet.slice(i);
+      heterogeneityScoreSet.value.push(getHeterogeneityScore(tempCellsList));
+    }
+  }
+);
+
+const heterogeneityScoreData = computed(() => {
+  const initialHeterogeneityValue = heterogeneityScoreSet.value[0];
+
+  const dataSet = heterogeneityScoreSet.value.map((value, index) => {
+    if (0 === index) {
+      if (0 === value) {
+        return {
+          index: '1',
+          value: 0,
+        };
+      }
+    }
+    return {
+      index: (index + 1).toString(),
+      value: Math.floor((100 * value) / initialHeterogeneityValue) / 100 || 0,
+    };
+  });
+  return dataSet;
+});
+
 onMounted(() => {
   const line = new Line('heterogeneity-line', {
-    data,
+    data: heterogeneityScoreData.value,
     // autoFit: true,
-    height: 250,
+    height: 220,
+    width: 400,
     animation: false,
-    xField: 'year',
+    xField: 'index',
     yField: 'value',
     label: {},
     point: {
@@ -49,9 +96,9 @@ onMounted(() => {
   line.render();
 
   watch(
-    () => data,
-    () => {
-      line.changeData(data);
+    () => heterogeneityScoreData.value,
+    newValue => {
+      line.changeData(newValue);
     }
   );
 });
@@ -59,7 +106,10 @@ onMounted(() => {
 
 <template>
   <div class="heterogeneity-line-container">
+    <!--    {{ heterogeneityScoreSet }}<br>-->
+    <!--    {{ heterogeneityScoreData }}-->
     <div id="heterogeneity-line"></div>
+    <div>Heterogeneity</div>
   </div>
 </template>
 

@@ -1,6 +1,15 @@
 /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
 // @ts-ignore
-function getOccupiedCount(targetX, targetY, xCellCount, yCellCount, dataset) {
+import { numberAnimationProps } from 'naive-ui';
+import { OccupiedCell } from '@types/AnalysisGroups';
+
+function getOccupiedCount(
+  targetX: number,
+  targetY: number,
+  xCellCount: number,
+  yCellCount: number,
+  dataset: Array<{ x: number; y: number; count: number }>
+) {
   let count = 0;
   for (let i = 0; i < dataset.length; i++) {
     const { x, y } = dataset[i];
@@ -18,52 +27,23 @@ function getOccupiedCount(targetX, targetY, xCellCount, yCellCount, dataset) {
   return count;
 }
 
-function getCellHeterogeneity(
-  durationCount: number,
-  occupiedCellsList: { x: number; y: number; count: number }[],
-  x: number,
-  y: number
-) {
-  if (durationCount === 0) {
-    return -1;
-  }
-  const observedCount = durationCount;
-  let allCounts = 0;
-  const occupiedCellsCount = occupiedCellsList.length;
-  for (let i = 0; i < occupiedCellsList.length; i++) {
-    allCounts += occupiedCellsList[i].count;
-  }
-  const expected = allCounts / occupiedCellsCount;
-  const heterogeneity =
-    Math.floor(
-      ((observedCount - expected) ** 2 / (expected * occupiedCellsCount)) * 100
-    ) / 100;
+function getHeterogeneityScore(cellsList: OccupiedCell[]) {
+  const eventCount = cellsList.reduce(
+    (acc: number, cur, OccupiedCell) => acc + cur.count,
+    0
+  ) as number;
+  const cellsCount = cellsList.length;
 
-  const allCountsAfterNodeRemoval = allCounts - observedCount;
-  const occupiedCellsCountAfterNodeRemoval = occupiedCellsCount - 1;
+  const expected = eventCount / cellsCount;
 
-  if (allCountsAfterNodeRemoval === 0) {
-    return heterogeneity;
-  }
-  const expectedAfterNodeRemoval =
-    allCounts / occupiedCellsCountAfterNodeRemoval;
-
-  const occupiedCellsListAfterNodeRemoval = occupiedCellsList.filter(
-    cell => !(cell.x === x && cell.y === y)
+  const heterogeneitySum = cellsList.reduce(
+    (acc: number, cur: OccupiedCell) => {
+      return acc + Math.pow(cur.count - expected, 2) / expected;
+    },
+    0
   );
 
-  let sumSquare = 0;
-
-  for (let i = 0; i < occupiedCellsListAfterNodeRemoval.length; i++) {
-    sumSquare +=
-      (occupiedCellsListAfterNodeRemoval[i].count - expectedAfterNodeRemoval) **
-      2;
-  }
-
-  return (
-    sumSquare / (expectedAfterNodeRemoval * occupiedCellsCountAfterNodeRemoval)
-  );
-  return heterogeneity;
+  return Math.floor((100 * heterogeneitySum) / cellsCount) / 100;
 }
 
-export { getOccupiedCount, getCellHeterogeneity };
+export { getOccupiedCount, getHeterogeneityScore };

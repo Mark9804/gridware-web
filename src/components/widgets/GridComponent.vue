@@ -84,11 +84,16 @@ const graphProperties = computed(() => {
   const uniqueXValues = uniq(allXValues.flat());
   const uniqueYValues = uniq(allYValues.flat());
 
+  // FIXME: temporary
   return {
-    xCellCount: uniqueXValues.length,
-    yCellCount: uniqueYValues.length,
-    xCellLabels: uniqueXValues.sort(),
-    yCellLabels: uniqueYValues.sort(),
+    // xCellCount: uniqueXValues.length,
+    xCellCount: 5,
+    // yCellCount: uniqueYValues.length,
+    yCellCount: 5,
+    // xCellLabels: uniqueXValues.sort(),
+    xCellLabels: [0, 1, 2, 3, 4],
+    // yCellLabels: uniqueYValues.sort(),
+    yCellLabels: [0, 1, 2, 3, 4],
   };
 });
 

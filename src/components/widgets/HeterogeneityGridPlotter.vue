@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType, ref, watch } from 'vue';
 import { OccupiedCell } from '@types/AnalysisGroups';
-import { getCellHeterogeneity, getOccupiedCount } from '@utils/heterogeneity';
+import { getOccupiedCount } from '@utils/heterogeneity';
 
 const emits = defineEmits<{
   (event: 'update:occupiedCells', occupiedCellsList: OccupiedCell[]): void;
@@ -49,7 +49,7 @@ function handleCountOccupied(x: number, y: number) {
     if (
       occupiedCellsList.value.filter(i => i.x === x && i.y === y).length === 0
     ) {
-      occupiedCellsList.value.push({ x, y, count: occupiedCount });
+      occupiedCellsList.value.push({ x, y, count: occupiedCount, order: -1 });
     }
     const tempOccupiedCellsList = occupiedCellsList.value.sort((a, b) => {
       if (a.count !== b.count) {
@@ -65,7 +65,7 @@ function handleCountOccupied(x: number, y: number) {
 
     for (let i = 0; i < tempOccupiedCellsList.length; i++) {
       const currentCell = tempOccupiedCellsList[i];
-      currentCell.order = i;
+      currentCell.order = i + 1;
       tempOccupiedCellsList[i] = currentCell;
     }
 
@@ -74,9 +74,11 @@ function handleCountOccupied(x: number, y: number) {
     return tempOccupiedCellsList.find(i => i.x === x && i.y === y)?.order;
   } else {
     // if no event happened in this cell, then the event count is 0
-    return -1;
+    return 0;
   }
 }
+
+emits('update:occupiedCells', occupiedCellsList.value);
 
 watch(
   () => occupiedCellsList.value,
@@ -96,7 +98,7 @@ watch(
             v-for="xCount in props.xCellCount"
           >
             {{
-              -1 !== handleCountOccupied(xCount - 1, props.yCellCount - yCount)
+              0 !== handleCountOccupied(xCount - 1, props.yCellCount - yCount)
                 ? `#${handleCountOccupied(
                     xCount - 1,
                     props.yCellCount - yCount
@@ -107,7 +109,7 @@ watch(
         </tr>
       </tbody>
     </table>
-    Heterogeneity
+    Cell #
   </div>
 </template>
 
