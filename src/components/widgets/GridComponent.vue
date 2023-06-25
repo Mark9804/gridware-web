@@ -2,7 +2,11 @@
 import { uniq } from 'lodash-es';
 import { PropType, computed, onMounted, ref, watch } from 'vue';
 import { useMainStore } from '@/store/mainStore';
-import { AnalysisGroup, AntvGraphPoint } from '@/types/AnalysisGroups';
+import {
+  AnalysisGroup,
+  AntvGraphPoint,
+  OccupiedCell,
+} from '@/types/AnalysisGroups';
 import { Graph, Grid } from '@antv/g6';
 import HeterogeneityGridPlotter from '@components/widgets/HeterogeneityGridPlotter.vue';
 import HeterogeneityLinePlotter from '@widgets/HeterogeneityLinePlotter.vue';
@@ -180,6 +184,12 @@ onMounted(() => {
     }
   );
 });
+
+const occupiedCellsList = ref<OccupiedCell[]>([]);
+
+function handleOccupiedCellsListChange(value: OccupiedCell[]) {
+  occupiedCellsList.value = value;
+}
 </script>
 
 <template>
@@ -230,9 +240,10 @@ onMounted(() => {
         :xCellCount="graphProperties.xCellCount"
         :nodes="renderData.nodes"
         :occupiedCells="occupiedCells"
+        @update:occupiedCells="handleOccupiedCellsListChange"
       />
 
-      <HeterogeneityLinePlotter />
+      <HeterogeneityLinePlotter :occupiedCellsList="occupiedCellsList" />
     </n-space>
   </n-space>
 </template>

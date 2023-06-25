@@ -23,3 +23,10 @@ export interface VariableGroup {
   variable_type?: 'categorical' | 'continuous';
   variable_values?: VariableValue[];
 }
+
+export interface OccupiedCell {
+  x: number;
+  y: number;
+  count: number;
+  order: number;
+}

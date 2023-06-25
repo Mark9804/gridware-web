@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import { Line } from '@antv/g2plot';
 
 const data = [
@@ -20,6 +20,7 @@ onMounted(() => {
     data,
     // autoFit: true,
     height: 250,
+    animation: false,
     xField: 'year',
     yField: 'value',
     label: {},
@@ -46,6 +47,13 @@ onMounted(() => {
   });
 
   line.render();
+
+  watch(
+    () => data,
+    () => {
+      line.changeData(data);
+    }
+  );
 });
 </script>
 
