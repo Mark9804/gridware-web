@@ -44,21 +44,21 @@ watch(
 const heterogeneityScoreData = computed(() => {
   const initialHeterogeneityValue = heterogeneityScoreSet.value[0];
 
-  const dataSet = heterogeneityScoreSet.value.map((value, index) => {
+  return heterogeneityScoreSet.value.map((value, index) => {
     if (0 === index) {
       if (0 === value) {
         return {
           index: '1',
-          value: 0,
+          heterogeneity: 0,
         };
       }
     }
     return {
       index: (index + 1).toString(),
-      value: Math.floor((100 * value) / initialHeterogeneityValue) / 100 || 0,
+      heterogeneity:
+        Math.floor((100 * value) / initialHeterogeneityValue) / 100 || 0,
     };
   });
-  return dataSet;
 });
 
 onMounted(() => {
@@ -69,7 +69,7 @@ onMounted(() => {
     width: 400,
     animation: false,
     xField: 'index',
-    yField: 'value',
+    yField: 'heterogeneity',
     label: {},
     point: {
       size: 5,
