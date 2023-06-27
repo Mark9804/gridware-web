@@ -145,12 +145,15 @@ button:focus-visible {
   box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.25);
 }
 
+//noinspection CssOverwrittenProperties
 .settings-panel-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
+  width: 100dvw;
   height: 100vh;
+  height: 100dvh;
   background-color: rgba(0, 0, 0, 0.2);
 }
 
