@@ -99,16 +99,33 @@ const graphProperties = computed(() => {
 
 function updateRawPointSet() {
   rawPointSet.value = [];
-  for (let i = 0; i < getPhaseCount(props.group as AnalysisGroup); i++) {
-    const point = {
-      id: `node${i}`,
-      x: targetData.value[props.group?.x_variable.variable_values[i].value],
-      y:
-        graphProperties.value.yCellCount -
-        targetData.value[props.group?.y_variable.variable_values[i].value] -
-        1,
-    };
-    rawPointSet.value.push(point);
+  if (!Array.isArray(targetData.value)) {
+    for (let i = 0; i < getPhaseCount(props.group as AnalysisGroup); i++) {
+      const point = {
+        id: `node${i}`,
+        x: targetData.value[props.group?.x_variable.variable_values[i].value],
+        y:
+          graphProperties.value.yCellCount -
+          targetData.value[props.group?.y_variable.variable_values[i].value] -
+          1,
+      };
+      rawPointSet.value.push(point);
+    }
+  } else {
+    let node_id = 0;
+    for (const participant of targetData.value) {
+      for (let i = 0; i < getPhaseCount(props.group as AnalysisGroup); i++) {
+        const point = {
+          id: `node${node_id++}`,
+          x: participant[props.group?.x_variable.variable_values[i].value],
+          y:
+            graphProperties.value.yCellCount -
+            participant[props.group?.y_variable.variable_values[i].value] -
+            1,
+        };
+        rawPointSet.value.push(point);
+      }
+    }
   }
 }
 
@@ -195,6 +212,14 @@ const occupiedCellsList = ref<OccupiedCell[]>([]);
 function handleOccupiedCellsListChange(value: OccupiedCell[]) {
   occupiedCellsList.value = value;
 }
+
+function handleSelectAllParticipants(value: boolean) {
+  if (value) {
+    handleParticipantChange('all');
+  } else {
+    handleParticipantChange(selectedParticipant.value);
+  }
+}
 </script>
 
 <template>
@@ -208,6 +233,9 @@ function handleOccupiedCellsListChange(value: OccupiedCell[]) {
         size="small"
         filterable
       />
+      <n-checkbox @update:checked="handleSelectAllParticipants">
+        Aggregate all participants
+      </n-checkbox>
     </n-space>
 
     <n-space>

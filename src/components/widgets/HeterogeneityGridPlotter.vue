@@ -71,10 +71,10 @@ function handleCountOccupied(x: number, y: number) {
 
     occupiedCellsList.value = tempOccupiedCellsList;
 
-    return tempOccupiedCellsList.find(i => i.x === x && i.y === y)?.order;
+    return tempOccupiedCellsList.find(i => i.x === x && i.y === y);
   } else {
     // if no event happened in this cell, then the event count is 0
-    return 0;
+    return { order: 0, count: 0 };
   }
 }
 
@@ -98,11 +98,22 @@ watch(
             v-for="xCount in props.xCellCount"
           >
             {{
-              0 !== handleCountOccupied(xCount - 1, props.yCellCount - yCount)
-                ? `#${handleCountOccupied(
-                    xCount - 1,
-                    props.yCellCount - yCount
-                  )}`
+              0 !==
+              handleCountOccupied(xCount - 1, props.yCellCount - yCount)?.order
+                ? `#${
+                    handleCountOccupied(xCount - 1, props.yCellCount - yCount)
+                      ?.order
+                  }`
+                : ''
+            }}
+            <br />
+            {{
+              0 !==
+              handleCountOccupied(xCount - 1, props.yCellCount - yCount)?.order
+                ? `${
+                    handleCountOccupied(xCount - 1, props.yCellCount - yCount)
+                      ?.count
+                  }`
                 : ''
             }}
           </td>

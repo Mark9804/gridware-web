@@ -44,6 +44,9 @@ export const useMainStore = defineStore({
     getTargetDataByIdentifier:
       state =>
       (identifier: string | number, filter: string[] = []) => {
+        if ('all' === identifier) {
+          return state.csvData.content;
+        }
         const participantIdentifier =
           state.customSettings.participantIdentifier;
         const targetAllData =
