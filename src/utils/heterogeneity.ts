@@ -43,7 +43,6 @@ function getHeterogeneityScore(cellsList: OccupiedCell[]) {
     0
   );
 
-  // return Math.floor((100 * heterogeneitySum) / cellsCount) / 100;
   return (heterogeneitySum / cellsCount).toFixed(2) * 1;
 }
 
