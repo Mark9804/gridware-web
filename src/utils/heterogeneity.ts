@@ -17,9 +17,9 @@ function getOccupiedCount(
     const yOriginal = y / 40;
     if (
       xOriginal - targetX < 1 &&
-      xOriginal - targetX > 0 &&
+      xOriginal - targetX >= 0 &&
       yCellCount - yOriginal - targetY < 1 &&
-      yCellCount - yOriginal - targetY > 0
+      yCellCount - yOriginal - targetY >= 0
     ) {
       count++;
     }
