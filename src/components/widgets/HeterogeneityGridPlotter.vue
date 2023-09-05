@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PropType, ref, watch } from 'vue';
-import { OccupiedCell } from '@types/AnalysisGroups';
+import { OccupiedCell, RawCell } from '@types/AnalysisGroups';
 import { getOccupiedCount } from '@utils/heterogeneity';
 
 const emits = defineEmits<{
@@ -36,6 +36,14 @@ watch(
   }
 );
 
+function getCellOrder(currentCell: RawCell, lastCell: RawCell) {
+  const lastCellCount = lastCell.count;
+  const lastCellOrder =
+    lastCell?.order && lastCell.order > 0 ? lastCell.order : 1;
+  const currentCellCount = currentCell.count;
+  return lastCellCount === currentCellCount ? lastCellOrder : lastCellOrder + 1;
+}
+
 function handleCountOccupied(x: number, y: number) {
   const occupiedCount = getOccupiedCount(
     x,
@@ -65,7 +73,10 @@ function handleCountOccupied(x: number, y: number) {
 
     for (let i = 0; i < tempOccupiedCellsList.length; i++) {
       const currentCell = tempOccupiedCellsList[i];
-      currentCell.order = i + 1;
+      const lastCell = i >= 1 ? tempOccupiedCellsList[i - 1] : currentCell;
+      // currentCell.order = lastCell.count === currentCell.count ? lastCell.order : i + 1;
+      currentCell.order = getCellOrder(currentCell, lastCell);
+      // currentCell.order = i + 1
       tempOccupiedCellsList[i] = currentCell;
     }
 

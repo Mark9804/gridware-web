@@ -27,7 +27,7 @@ function getOccupiedCount(
   return count;
 }
 
-function getHeterogeneityScore(cellsList: OccupiedCell[]) {
+function getHeterogeneityScore(cellsList: OccupiedCell[]): number | undefined {
   const eventCount = cellsList.reduce(
     (acc: number, cur, OccupiedCell) => acc + cur.count,
     0
@@ -43,7 +43,7 @@ function getHeterogeneityScore(cellsList: OccupiedCell[]) {
     0
   );
 
-  return (heterogeneitySum / cellsCount).toFixed(2) * 1;
+  return (heterogeneitySum / cellsCount).toFixed(2) * 1 ?? undefined;
 }
 
 export { getOccupiedCount, getHeterogeneityScore };

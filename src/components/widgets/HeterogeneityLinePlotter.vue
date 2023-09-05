@@ -19,24 +19,19 @@ const cellsList = computed(() => props.occupiedCellsList);
 
 const heterogeneityScoreSet = ref<number[]>([]);
 
-const testSet = ref([
-  { count: 2 },
-  { count: 2 },
-  { count: 3 },
-  { count: 4 },
-  { count: 20 },
-  { count: 30 },
-]);
-
 watch(
   () => props.occupiedCellsList,
   () => {
     heterogeneityScoreSet.value = [];
-    const pointSet = cellsList.value;
-    for (let i = 0; i < pointSet.length; i++) {
-      // delete first i elements
-      const tempCellsList = pointSet.slice(i);
-      heterogeneityScoreSet.value.push(getHeterogeneityScore(tempCellsList));
+    let pointSet = cellsList.value;
+    let i = 0;
+    while (Array.isArray(pointSet) && pointSet.length > 0) {
+      pointSet = pointSet.filter(el => el.order > i);
+      const heterogeneityScore = getHeterogeneityScore(pointSet);
+      if (!Number.isNaN(heterogeneityScore)) {
+        heterogeneityScoreSet.value.push(heterogeneityScore);
+      }
+      i++;
     }
   }
 );
@@ -106,10 +101,10 @@ onMounted(() => {
 
 <template>
   <div class="heterogeneity-line-container">
-    <!--    {{ heterogeneityScoreSet }}<br>-->
-    <!--    {{ heterogeneityScoreData }}-->
+    <!--        {{ heterogeneityScoreSet }}<br>-->
+    <!--        {{ heterogeneityScoreData }}-->
     <div id="heterogeneity-line"></div>
-    <div>Heterogeneity</div>
+    <div>Heterogeneity declines per run</div>
   </div>
 </template>
 

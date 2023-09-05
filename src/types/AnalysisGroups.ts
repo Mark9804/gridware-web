@@ -30,3 +30,10 @@ export interface OccupiedCell {
   count: number;
   order: number;
 }
+
+export interface RawCell {
+  x: number;
+  y: number;
+  count?: number;
+  order?: number;
+}

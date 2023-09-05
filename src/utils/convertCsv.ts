@@ -1,4 +1,4 @@
-import { CsvContent } from '../types/store';
+import { CsvContent } from '@types/store';
 
 function convertCsv(csvText: string, delimiter = ','): CsvContent[] {
   const lines: string[] = [];
