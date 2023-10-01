@@ -25,7 +25,7 @@
   "dependencies": {
     "@antv/g2plot": "2.4.31",
     "@antv/g6": "4.8.22",
-    "@types/node": "20.7.0",
+    "@types/node": "20.7.1",
     "@vue/compiler-sfc": "3.x",
     "husky": "8.0.3",
     "lodash-es": "4.17.21",
