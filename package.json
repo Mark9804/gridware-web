@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@antv/g2plot": "2.4.31",
-    "@antv/g6": "4.8.22",
-    "@types/node": "20.8.2",
+    "@antv/g6": "4.8.23",
+    "@types/node": "20.8.4",
     "@vue/compiler-sfc": "3.x",
     "husky": "8.0.3",
     "lodash-es": "4.17.21",
@@ -39,15 +39,15 @@
     "@rushstack/eslint-patch": "1.5.1",
     "@trivago/prettier-plugin-sort-imports": "4.2.0",
     "@types/lodash-es": "4.17.9",
-    "@types/uuid": "9.0.4",
-    "@typescript-eslint/eslint-plugin": "6.7.4",
-    "@typescript-eslint/parser": "6.7.4",
+    "@types/uuid": "9.0.5",
+    "@typescript-eslint/eslint-plugin": "6.7.5",
+    "@typescript-eslint/parser": "6.7.5",
     "@vitejs/plugin-legacy": "4.1.1",
     "@vitejs/plugin-vue": "4.4.0",
     "@vue/eslint-config-typescript": "12.0.0",
     "autoprefixer": "10.4.16",
     "chalk": "5.3.0",
-    "eslint": "8.50.0",
+    "eslint": "8.51.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-import": "2.28.1",
     "eslint-plugin-sort-exports": "0.8.0",
@@ -57,7 +57,7 @@
     "prettier": "3.0.3",
     "prettier-plugin-css-order": "2.0.1",
     "rollup-plugin-visualizer": "5.9.2",
-    "sass": "1.68.0",
+    "sass": "1.69.2",
     "tailwindcss": "3.3.3",
     "terser": "5.21.0",
     "typescript": "5.2.2",
@@ -66,6 +66,6 @@
     "vite": "4.4.11",
     "vite-plugin-compression": "0.5.1",
     "vite-plugin-pwa": "0.16.5",
-    "vue-tsc": "1.8.15"
+    "vue-tsc": "1.8.19"
   }
 }
