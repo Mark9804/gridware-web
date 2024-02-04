@@ -25,7 +25,7 @@
   "dependencies": {
     "@antv/g2plot": "2.4.31",
     "@antv/g6": "4.8.24",
-    "@types/node": "20.11.13",
+    "@types/node": "20.11.15",
     "@vue/compiler-sfc": "3.x",
     "husky": "8.0.3",
     "lodash-es": "4.17.21",
@@ -51,7 +51,7 @@
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-sort-exports": "0.9.1",
-    "eslint-plugin-vue": "9.21.0",
+    "eslint-plugin-vue": "9.21.1",
     "naive-ui": "2.37.3",
     "postcss": "8.4.33",
     "prettier": "3.2.4",
