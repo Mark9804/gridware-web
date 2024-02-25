@@ -25,7 +25,7 @@
   "dependencies": {
     "@antv/g2plot": "2.4.31",
     "@antv/g6": "4.8.24",
-    "@types/node": "20.11.19",
+    "@types/node": "20.11.20",
     "@vue/compiler-sfc": "3.x",
     "husky": "8.0.3",
     "lodash-es": "4.17.21",
@@ -33,7 +33,7 @@
     "pinia-plugin-persistedstate": "3.2.1",
     "uuid": "9.0.1",
     "vue": "3.4.19",
-    "vue-router": "4.2.5"
+    "vue-router": "4.3.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "1.7.2",
@@ -52,7 +52,7 @@
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-sort-exports": "0.9.1",
     "eslint-plugin-vue": "9.21.1",
-    "naive-ui": "2.37.3",
+    "naive-ui": "2.38.0",
     "postcss": "8.4.35",
     "prettier": "3.2.5",
     "prettier-plugin-css-order": "2.0.1",
