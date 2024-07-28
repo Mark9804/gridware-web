@@ -32,6 +32,7 @@
     "pinia": "2.1.7",
     "pinia-plugin-persistedstate": "3.2.1",
     "uuid": "9.0.1",
+    "vite-plugin-vue-devtools": "^7.3.6",
     "vue": "3.4.32",
     "vue-router": "4.4.0"
   },

@@ -10,6 +10,8 @@ import vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import Components from 'unplugin-vue-components/vite';
+import vueDevTools from "vite-plugin-vue-devtools";
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -100,6 +102,7 @@ export default defineConfig({
       // uncomment to unregister service worker
       selfDestroying: true,
     }),
+    vueDevTools(),
     // viteCompression(),
     // visualizer({
     //   title: 'GridWare Web',
