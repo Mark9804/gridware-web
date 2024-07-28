@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@antv/g2plot": "2.4.31",
-    "@antv/g6": "4.8.24",
+    "@antv/g6": "5.0.10",
     "@types/node": "20.14.12",
     "@vue/compiler-sfc": "3.x",
     "husky": "9.1.2",
