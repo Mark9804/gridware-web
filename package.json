@@ -33,7 +33,7 @@
     "pinia-plugin-persistedstate": "3.2.1",
     "uuid": "10.0.0",
     "vite-plugin-vue-devtools": "^7.3.6",
-    "vue": "3.4.36",
+    "vue": "3.4.37",
     "vue-router": "4.4.3"
   },
   "devDependencies": {
@@ -59,12 +59,12 @@
     "prettier-plugin-css-order": "2.1.2",
     "rollup-plugin-visualizer": "5.12.0",
     "sass": "1.77.8",
-    "tailwindcss": "3.4.7",
-    "terser": "5.31.4",
+    "tailwindcss": "3.4.9",
+    "terser": "5.31.5",
     "typescript": "5.5.4",
     "unplugin-auto-import": "0.18.2",
     "unplugin-vue-components": "0.27.3",
-    "vite": "5.3.5",
+    "vite": "5.4.0",
     "vite-plugin-compression": "0.5.1",
     "vite-plugin-pwa": "0.20.1",
     "vue-tsc": "2.0.29"
