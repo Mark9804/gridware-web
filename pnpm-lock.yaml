@@ -12,8 +12,8 @@ importers:
         specifier: 2.4.32
         version: 2.4.32
       '@antv/g6':
-        specifier: 5.0.16
-        version: 5.0.16(workerize-loader@2.0.2(webpack@5.93.0))
+        specifier: 5.0.17
+        version: 5.0.17(workerize-loader@2.0.2(webpack@5.93.0))
       '@types/node':
         specifier: 20.16.1
         version: 20.16.1
@@ -237,8 +237,8 @@ packages:
   '@antv/g2plot@2.4.32':
     resolution: {integrity: sha512-HTBuAMa+PJ6DqY1XCX1GBNTGz/IBmn9lx2xu18NQSHtgXAIHWSF+WYs7Aj8iaujcapM8g+IPgjS6ObO1u9CbFg==}
 
-  '@antv/g6@5.0.16':
-    resolution: {integrity: sha512-/AIjFuqxYhRx0QjQapN6hpZh6eHdJ8Q9/oTdjO79OeXwv33nzGlzJH1HL246H1Lo6W4LPIj5thGENtJxCnSnkg==}
+  '@antv/g6@5.0.17':
+    resolution: {integrity: sha512-i9dWgvzDTKs5ry+LTtxFoUrUGyeM80OTFA8W9RGDB/9Nu2tboNqrq4OEmkwAulOELnKugz238dESgxLBG7gkdg==}
 
   '@antv/g@6.0.12':
     resolution: {integrity: sha512-7FEYxc8rR79Wi3VdCHqf/MY0a+6X3N5y8D0FiGc3XBtt8WnmJYWO/wcN8rQRvIV//ecMSeq9V/9En1TqyOnaEA==}
@@ -4447,7 +4447,7 @@ snapshots:
       size-sensor: 1.0.1
       tslib: 2.6.2
 
-  '@antv/g6@5.0.16(workerize-loader@2.0.2(webpack@5.93.0))':
+  '@antv/g6@5.0.17(workerize-loader@2.0.2(webpack@5.93.0))':
     dependencies:
       '@antv/component': 2.0.4
       '@antv/event-emitter': 0.1.3
